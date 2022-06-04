@@ -1,0 +1,79 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+  <display-name>DongYuWebBase</display-name>
+  	<!--容器对于web.xml的加载过程是 context-param >> listener  >> fileter  >> servlet -->
+
+	<!--1.配置 spring root context  开始-->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+            classpath:webApplicationContext.xml,
+            classpath:shiro.xml
+        </param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<!-- 1.配置 spring application root  结束-->
+
+	<!--2.配置 spring mvc context 开始-->
+	<servlet>
+		<servlet-name>spring</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:springDispatcherContext.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>spring</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	<!--2.配置 spring mvc context 结束-->
+
+
+    <filter>
+        <filter-name>shiroFilter</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+        <init-param>
+            <!-- 该值缺省为false,表示生命周期由SpringApplicationContext管理,设置为true则表示由ServletContainer管理 -->
+            <param-name>targetFilterLifecycle</param-name>
+            <param-value>true</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>shiroFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <filter>
+            <filter-name>characterEncodingFilter</filter-name>  
+            <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>  
+            <init-param>  
+                <param-name>encoding</param-name>  
+                <param-value>UTF-8</param-value>  
+            </init-param>  
+            <init-param>  
+                <param-name>forceEncoding</param-name>  
+                <param-value>true</param-value>  
+            </init-param>  
+        </filter>  
+        <filter-mapping>  
+            <filter-name>characterEncodingFilter</filter-name>  
+            <url-pattern>/*</url-pattern>  
+        </filter-mapping>  
+	
+	<!-- 3.获取站点的根目录放入至System.getProperty("webApp.root")中文件目录全路径  开始-->
+ 	<context-param>  
+        <param-name>webAppRootKey</param-name>   
+        <param-value>webApp.root</param-value>  
+    </context-param>  
+    <listener>   
+        <listener-class>org.springframework.web.util.WebAppRootListener</listener-class>   
+    </listener>
+    <!-- 3.获取站点的根目录放入至System.getProperty("xxxx")中  结束-->
+</web-app>

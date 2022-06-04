@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="DongYu.WebBase.System.Mapping.UserMapper">
+
+	<resultMap id="BaseMap" type="DongYu.WebBase.System.Entity.User">
+        <id column="id" property="id" jdbcType="INTEGER"/>
+        <result column="userName" property="userName" jdbcType="VARCHAR"/>
+        <result column="alias" property="alias" jdbcType="VARCHAR"/>
+        <result column="passWord" property="passWord" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="depart" property="depart" jdbcType="VARCHAR"/>
+        <result column="role" property="role" jdbcType="INTEGER"/>
+        <result column="state" property="state" jdbcType="INTEGER"/>
+		<result column="sysType" property="sysType" jdbcType="INTEGER"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="createUser" property="createUser" jdbcType="VARCHAR"/>
+        <result column="modifTime" property="modifTime" jdbcType="TIMESTAMP"/>
+        <result column="modifUser" property="modifUser" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		id,userName,alias,passWord,email,sex,depart,role,state,sysType,createTime,createUser,modifTime,modifUser
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true"(主键自增)  keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="DongYu.WebBase.System.Entity.User">
+    <![CDATA[
+        INSERT INTO tab_user (
+        	id,
+        	userName,
+        	alias,
+        	passWord,
+        	email,
+        	sex,
+        	depart,
+        	role,
+        	state,
+        	sysType,
+        	createTime,
+        	createUser,
+        	modifTime,
+        	modifUser
+        ) VALUES (
+        	#{id,jdbcType=INTEGER},
+        	#{userName,jdbcType=VARCHAR},
+        	#{alias,jdbcType=VARCHAR},
+        	#{passWord,jdbcType=VARCHAR},
+        	#{email,jdbcType=VARCHAR},
+        	#{sex,jdbcType=VARCHAR},
+        	#{depart,jdbcType=VARCHAR},
+        	#{role,jdbcType=INTEGER},
+        	#{state,jdbcType=INTEGER},
+        	#{sysType,jdbcType=INTEGER},
+        	#{createTime,jdbcType=TIMESTAMP},
+        	#{createUser,jdbcType=VARCHAR},
+        	#{modifTime,jdbcType=TIMESTAMP},
+        	#{modifUser,jdbcType=VARCHAR}
+        )
+    ]]>
+	<!--	
+		oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+		DB2: order="BEFORE"" values nextval for sequenceName
+	<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+		SELECT sequenceName.nextval AS ID FROM DUAL 
+       </selectKey>
+	-->
+	</insert>
+    
+	<update id="update" parameterType="DongYu.WebBase.System.Entity.User">
+        UPDATE tab_user 
+        <set >
+	         <if test="userName != null" >
+	         <![CDATA[
+	              userName =#{userName,jdbcType=VARCHAR},
+             ]]>
+             </if>
+	         <if test="alias != null" >
+	         <![CDATA[
+	              alias =#{alias,jdbcType=VARCHAR},
+             ]]>
+             </if>
+	         <if test="passWord != null" >
+	         <![CDATA[
+	              passWord =#{passWord,jdbcType=VARCHAR},
+             ]]>
+             </if>
+	         <if test="email != null" >
+	         <![CDATA[
+	              email =#{email,jdbcType=VARCHAR},
+             ]]>
+             </if>
+	         <if test="sex != null" >
+	         <![CDATA[
+	              sex =#{sex,jdbcType=VARCHAR},
+             ]]>
+             </if>
+	         <if test="depart != null" >
+	         <![CDATA[
+	              depart =#{depart,jdbcType=VARCHAR},
+             ]]>
+             </if>
+	         <if test="role != null" >
+	         <![CDATA[
+	              role =#{role,jdbcType=INTEGER},
+             ]]>
+             </if>
+	         <if test="state != null" >
+	         <![CDATA[
+	              state =#{state,jdbcType=INTEGER},
+             ]]>
+             </if>
+			<if test="sysType != null" >
+				<![CDATA[
+	              sysType =#{sysType,jdbcType=INTEGER},
+             ]]>
+			</if>
+	         <if test="createTime != null" >
+	         <![CDATA[
+	              createTime =#{createTime,jdbcType=TIMESTAMP},
+             ]]>
+             </if>
+	         <if test="createUser != null" >
+	         <![CDATA[
+	              createUser =#{createUser,jdbcType=VARCHAR},
+             ]]>
+             </if>
+	         <if test="modifTime != null" >
+	         <![CDATA[
+	              modifTime =#{modifTime,jdbcType=TIMESTAMP},
+             ]]>
+             </if>
+	         <if test="modifUser != null" >
+	         <![CDATA[
+	              modifUser =#{modifUser,jdbcType=VARCHAR}
+             ]]>
+             </if>
+	    </set>
+	     <![CDATA[
+        WHERE 
+        	id = #{id}  	        
+ 		]]>
+	</update>
+
+    <!--传入id, 测试是否支持主键非id  -->
+    <delete id="deleteById" parameterType="DongYu.WebBase.System.Entity.User">
+    <![CDATA[
+        DELETE FROM tab_user
+        WHERE
+        id = #{id} 
+    ]]>
+    </delete>
+    
+    <!--传入id, 测试是否支持主键非id  -->
+    <select id="findOne" resultMap="DongYu.WebBase.System.Mapping.UserMapper.BaseMap" parameterType="DongYu.WebBase.System.Entity.User" >
+		SELECT <include refid="DongYu.WebBase.System.Mapping.UserMapper.columns" />
+	    <![CDATA[
+		    FROM tab_user
+		]]>  
+		<include refid="DongYu.WebBase.System.Mapping.UserMapper.findWhere"/>
+	</select>
+	
+	<select id="getCount" resultType="java.lang.Long">
+		<![CDATA[
+		SELECT COUNT(*) FROM tab_user
+	  	]]>  
+		<include refid="DongYu.WebBase.System.Mapping.UserMapper.findWhere"/>
+	</select>
+	
+	<select id="findPage" resultMap="DongYu.WebBase.System.Mapping.UserMapper.BaseMap">
+		SELECT <include refid="DongYu.WebBase.System.Mapping.UserMapper.columns" />
+ 	    <![CDATA[
+		    FROM tab_user
+		]]>
+		<include refid="DongYu.WebBase.System.Mapping.UserMapper.findPageWhere"/>
+      	<if test="orderBy != null" >${orderBy}</if>
+      	<if test="orderBy == null" >
+        	ORDER BY id DESC
+      	</if>
+      	<if test="(rowBounds != null) &amp;&amp; (rowBounds.limit != 2147483647)" >
+      		LIMIT ${rowBounds.offset} ,${rowBounds.limit}
+      	</if>
+	</select>
+
+
+
+	<select id="findAll" resultType="DongYu.WebBase.System.Entity.User">
+		select id , userName , alias from tab_user
+	</select>
+
+	<select id="findAllByRoleId" resultType="DongYu.WebBase.System.Entity.User">
+		select id , userName , alias ,depart from tab_user
+
+		<where>
+			<if test="list!= null" >
+				 id in (select userId from tab_role_user_relation  rela
+				where rela.roleId in
+				<foreach collection="list" index="index" item="i" open="(" separator="," close=")">
+					#{i}
+				</foreach>
+				)
+			</if>
+			<if test="record.userName!= null">
+				and userName like CONCAt('%',#{record.userName},'%')
+			</if>
+			<if test="record.alias!= null">
+				and alias like CONCAt('%',#{record.alias},'%')
+			</if>
+			<if test="record.depart!= null">
+				and depart like CONCAt('%',#{record.depart},'%')
+			</if>
+
+		</where>
+
+	</select>
+
+
+
+
+
+
+
+
+
+
+
+
+	<!--构建sqlWhere  -->
+ 	<sql id="findWhere">
+		<where>
+			<if test="id!= null" >
+		  		AND id=#{id,jdbcType=INTEGER} 
+		  	</if>
+			<if test="userName!= null" >
+		  		AND userName=#{userName,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="alias!= null" >
+		  		AND alias=#{alias,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="passWord!= null" >
+		  		AND passWord=#{passWord,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="email!= null" >
+		  		AND email=#{email,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="sex!= null" >
+		  		AND sex=#{sex,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="depart!= null" >
+		  		AND depart=#{depart,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="role!= null" >
+		  		AND role=#{role,jdbcType=INTEGER} 
+		  	</if>
+			<if test="state!= null" >
+		  		AND state=#{state,jdbcType=INTEGER} 
+		  	</if>
+			<if test="sysType!= null" >
+				AND sysType=#{sysType,jdbcType=INTEGER}
+			</if>
+			<if test="createTime!= null" >
+		  		AND createTime=#{createTime,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="createTimeBegin!= null" >
+		  		AND createTime&gt;=#{createTimeBegin,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="createTimeEnd!= null" >
+		  		AND createTime&lt;=#{createTimeEnd,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="createUser!= null" >
+		  		AND createUser=#{createUser,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="modifTime!= null" >
+		  		AND modifTime=#{modifTime,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="modifTimeBegin!= null" >
+		  		AND modifTime&gt;=#{modifTimeBegin,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="modifTimeEnd!= null" >
+		  		AND modifTime&lt;=#{modifTimeEnd,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="modifUser!= null" >
+		  		AND modifUser=#{modifUser,jdbcType=VARCHAR} 
+		  	</if>
+		</where>
+	</sql>
+	
+	<!--构建sqlWhere  -->
+ 	<sql id="findPageWhere">
+		<where>
+			<if test="record.id!= null" >
+		  		AND id=#{record.id,jdbcType=INTEGER} 
+		  	</if>
+			<if test="record.userName!= null" >
+		  		AND userName=#{record.userName,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="record.alias!= null" >
+		  		AND alias=#{record.alias,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="record.passWord!= null" >
+		  		AND passWord=#{record.passWord,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="record.email!= null" >
+		  		AND email=#{record.email,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="record.sex!= null" >
+		  		AND sex=#{record.sex,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="record.depart!= null" >
+		  		AND depart=#{record.depart,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="record.role!= null" >
+		  		AND role=#{record.role,jdbcType=INTEGER} 
+		  	</if>
+			<if test="record.state!= null" >
+		  		AND state=#{record.state,jdbcType=INTEGER} 
+		  	</if>
+			<if test="record.sysType!= null" >
+				AND sysType=#{record.sysType,jdbcType=INTEGER}
+			</if>
+			<if test="record.createTime!= null" >
+		  		AND createTime=#{record.createTime,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="record.createTimeBegin!= null" >
+		  		AND createTime&gt;=#{record.createTimeBegin,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="record.createTimeEnd!= null" >
+		  		AND createTime&lt;=#{record.createTimeEnd,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="record.createUser!= null" >
+		  		AND createUser=#{record.createUser,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="record.modifTime!= null" >
+		  		AND modifTime=#{record.modifTime,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="record.modifTimeBegin!= null" >
+		  		AND modifTime&gt;=#{record.modifTimeBegin,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="record.modifTimeEnd!= null" >
+		  		AND modifTime&lt;=#{record.modifTimeEnd,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="record.modifUser!= null" >
+		  		AND modifUser=#{record.modifUser,jdbcType=VARCHAR} 
+		  	</if>
+		</where>
+	</sql>
+</mapper>
+
