@@ -8,7 +8,6 @@
     <name>DongYuWebBase Maven Webapp</name>
     <url>http://maven.apache.org</url>
 
-
     <properties>
         <spring.version>3.2.8.RELEASE</spring.version>
         <shiro.version>1.4.0</shiro.version>
@@ -215,9 +214,8 @@
 
     </dependencies>
 
-
     <build>
-        <finalName>DongYuWebBase</finalName>
+        <finalName>BillManage</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
