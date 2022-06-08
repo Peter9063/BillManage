@@ -1,6 +1,8 @@
 package DongYu.WebBase.Service.Tester;
 
 import DongYu.WebBase.Tester.PublicJUnit4ClassRunner;
+import Yao.EBusiness.Entity.Orders;
+import Yao.EBusiness.Service.OrderService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -19,11 +21,16 @@ public class TestService {
 //	@Autowired(required=true)
 //	org.springframework.jdbc.core.JdbcTemplate jdbcTemplate ;
 
-//	@Autowired(required=true)
-//	DataDistributeService service;
+	@Autowired(required=true)
+	OrderService service;
 
 	@Test
 	public void test(){
+		Orders[] orders=new Orders[1];
+		Orders order=new Orders();
+		order.setDistributor("Distributor");
+		orders[0]=order;
+		service.save(orders);
 
 //		Module[] modules=new Module[3];
 //		modules[0]=new Module();

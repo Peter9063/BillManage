@@ -9,7 +9,7 @@
         <unpackNestedArchives>false</unpackNestedArchives>
       </options>
     </properties>
-    <root id="archive" name="DongYuWebBase.war">
+    <root id="archive" name="BillManage.war">
       <element id="artifact" artifact-name="BillManage:war exploded" />
     </root>
   </artifact>

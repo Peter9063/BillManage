@@ -81,13 +81,13 @@
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="DongYu.WebBase.System.Mapping" />
+		<property name="basePackage" value="DongYu.WebBase.System.Mapping,Yao.EBusiness.Mapping" />
 		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
 	</bean>
 	<!-- mybatis config end -->
 
 	<context:annotation-config />
-	<context:component-scan base-package="DongYu.WebBase.System.Init,DongYu.WebBase.System.ServiceImp,DongYu.WebBase.System.Utils" />
+	<context:component-scan base-package="DongYu.WebBase.System.Init,DongYu.WebBase.System.ServiceImp,DongYu.WebBase.System.Utils,Yao.EBusiness.ServiceImp" />
 
 	<!-- webApp exception handler begin -->
 	<bean id="exceptionHandler"

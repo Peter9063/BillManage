@@ -67,7 +67,7 @@
     </bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-	  <property name="basePackage" value="DongYu.WebBase.System.Mapping" />
+	  <property name="basePackage" value="DongYu.WebBase.System.Mapping,Yao.EBusiness.Mapping" />
 	  <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
 	</bean>
 
