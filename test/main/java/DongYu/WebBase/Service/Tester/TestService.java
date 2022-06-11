@@ -1,14 +1,19 @@
 package DongYu.WebBase.Service.Tester;
 
+import DongYu.WebBase.System.Entity.SysBase.WebMessage;
 import DongYu.WebBase.Tester.PublicJUnit4ClassRunner;
 import Yao.EBusiness.Entity.Orders;
 import Yao.EBusiness.Service.OrderService;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
+
+import java.util.List;
 
 
 @RunWith(PublicJUnit4ClassRunner.class)
@@ -26,24 +31,18 @@ public class TestService {
 
 	@Test
 	public void test(){
-		Orders[] orders=new Orders[1];
-		Orders order=new Orders();
-		order.setDistributor("Distributor");
-		orders[0]=order;
-		service.save(orders);
+//		Orders[] orders=new Orders[1];
+//		Orders order=new Orders();
+//		order.setDistributor("Distributor");
+//		orders[0]=order;
+//		service.save(orders);
 
-//		Module[] modules=new Module[3];
-//		modules[0]=new Module();
-//		modules[0].setRadioAddress("863703034889001");
-//		modules[0].setMesPackNum("000001");
-//		modules[1]=new Module();
-//		modules[1].setRadioAddress("863703034892369");
-//		modules[1].setMesPackNum("000002");
-//		modules[2]=new Module();
-//		modules[2].setRadioAddress("863703034892849");
-//		modules[2].setMesPackNum("000003");
-//		WebMessage msg = moduleService.updateMesPackNUm(modules);
-//		Assert.assertEquals(msg.getSuccess(),Boolean.FALSE);
+		Orders record=new Orders();
+		WebMessage webMes=service.findPage(record,0,Integer.MAX_VALUE,"");
+		Long total=webMes.getTotal();
+		System.out.println("Total"+total.toString());
+		List<Orders> list= (List<Orders>) webMes.getData();
+		System.out.print("Data:"+ JSONArray.fromObject(list));
 	}
 
 }

@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="DongYu.WebBase.System.Mapping.MenuMapper">
+
+	<resultMap id="BaseMap" type="DongYu.WebBase.System.Entity.Menu">
+        <id column="menuId" property="menuId" jdbcType="BIGINT"/>
+        <result column="code" property="code" jdbcType="VARCHAR"/>
+        <result column="pId" property="pId" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="levels" property="levels" jdbcType="INTEGER"/>
+        <result column="menuFlag" property="menuFlag" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="updateTime" property="updateTime" jdbcType="TIMESTAMP"/>
+        <result column="createUser" property="createUser" jdbcType="VARCHAR"/>
+        <result column="updateUser" property="updateUser" jdbcType="VARCHAR"/>
+	</resultMap>
+
+
+
+	<!--查询所有的menu-->
+	<select id ="findAllMenu" resultType="DongYu.WebBase.System.Entity.Menu">
+        select * from tab_menu order by sort
+    </select>
+
+	<!--保留关键字字段 使用``包含-->
+	<!--增加一个menu-->
+	<insert id="insertMenu" parameterType="DongYu.WebBase.System.Entity.Menu">
+		insert into tab_menu
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			`code`,pId,`name`,url,sort,levels,menuFlag,description,`status`,
+			<if test='createTime != null and createTime != ""'>
+				createTime,
+			</if>
+			<if test='createUser != null and createUser != ""'>
+				createUser,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			#{code}, #{pId}, #{name}, #{url}, #{sort}, #{levels}, #{menuFlag}, #{description}, #{status},
+			<if test='createTime != null and createTime != ""'>
+				#{createTime,jdbcType=TIMESTAMP},
+			</if>
+			<if test='createUser != null and createUser != ""'>
+				#{createUser,jdbcType=INTEGER},
+			</if>
+		</trim>
+
+	</insert>
+
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		menuId,code,pId,name,url,sort,levels,menuFlag,description,status,createTime,updateTime,createUser,updateUser
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true"(主键自增)  keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="menuId" parameterType="DongYu.WebBase.System.Entity.Menu">
+    <![CDATA[
+        INSERT INTO tab_menu (
+        	menuId,
+        	code,
+        	pId,
+        	name,
+        	url,
+        	sort,
+        	levels,
+        	menuFlag,
+        	description,
+        	status,
+        	createTime,
+        	updateTime,
+        	createUser,
+        	updateUser
+        ) VALUES (
+        	#{menuId,jdbcType=BIGINT},
+        	#{code,jdbcType=VARCHAR},
+        	#{pId,jdbcType=BIGINT},
+        	#{name,jdbcType=VARCHAR},
+        	#{url,jdbcType=VARCHAR},
+        	#{sort,jdbcType=INTEGER},
+        	#{levels,jdbcType=INTEGER},
+        	#{menuFlag,jdbcType=VARCHAR},
+        	#{description,jdbcType=VARCHAR},
+        	#{status,jdbcType=VARCHAR},
+        	#{createTime,jdbcType=TIMESTAMP},
+        	#{updateTime,jdbcType=TIMESTAMP},
+        	#{createUser,jdbcType=VARCHAR},
+        	#{updateUser,jdbcType=VARCHAR}
+        )
+    ]]>
+	<!--	
+		oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL 
+		DB2: order="BEFORE"" values nextval for sequenceName
+	<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+		SELECT sequenceName.nextval AS ID FROM DUAL 
+       </selectKey>
+	-->
+	</insert>
+    
+	<update id="update" parameterType="DongYu.WebBase.System.Entity.Menu">
+        UPDATE tab_menu 
+        <set >
+	         <if test="code != null" >
+	         <![CDATA[
+	              code =#{code,jdbcType=VARCHAR},
+             ]]>
+             </if>
+	         <if test="pId != null" >
+	         <![CDATA[
+	              pId =#{pId,jdbcType=BIGINT},
+             ]]>
+             </if>
+	         <if test="name != null" >
+	         <![CDATA[
+	              name =#{name,jdbcType=VARCHAR},
+             ]]>
+             </if>
+	         <if test="url != null" >
+	         <![CDATA[
+	              url =#{url,jdbcType=VARCHAR},
+             ]]>
+             </if>
+	         <if test="sort != null" >
+	         <![CDATA[
+	              sort =#{sort,jdbcType=INTEGER},
+             ]]>
+             </if>
+	         <if test="levels != null" >
+	         <![CDATA[
+	              levels =#{levels,jdbcType=INTEGER},
+             ]]>
+             </if>
+	         <if test="menuFlag != null" >
+	         <![CDATA[
+	              menuFlag =#{menuFlag,jdbcType=VARCHAR},
+             ]]>
+             </if>
+	         <if test="description != null" >
+	         <![CDATA[
+	              description =#{description,jdbcType=VARCHAR},
+             ]]>
+             </if>
+	         <if test="status != null" >
+	         <![CDATA[
+	              status =#{status,jdbcType=VARCHAR},
+             ]]>
+             </if>
+	         <if test="createTime != null" >
+	         <![CDATA[
+	              createTime =#{createTime,jdbcType=TIMESTAMP},
+             ]]>
+             </if>
+	         <if test="updateTime != null" >
+	         <![CDATA[
+	              updateTime =#{updateTime,jdbcType=TIMESTAMP},
+             ]]>
+             </if>
+	         <if test="createUser != null" >
+	         <![CDATA[
+	              createUser =#{createUser,jdbcType=VARCHAR},
+             ]]>
+             </if>
+	         <if test="updateUser != null" >
+	         <![CDATA[
+	              updateUser =#{updateUser,jdbcType=VARCHAR}
+             ]]>
+             </if>
+	    </set>
+	     <![CDATA[
+        WHERE 
+        	menuId = #{menuId}  	        
+ 		]]>
+	</update>
+
+    <!--传入id, 测试是否支持主键非id  -->
+    <delete id="deleteById" parameterType="DongYu.WebBase.System.Entity.Menu">
+    <![CDATA[
+        DELETE FROM tab_menu
+        WHERE
+        menuId = #{menuId}
+    ]]>
+    </delete>
+    
+    <!--传入id, 测试是否支持主键非id  -->
+    <select id="findOne" resultMap="DongYu.WebBase.System.Mapping.MenuMapper.BaseMap" parameterType="DongYu.WebBase.System.Entity.Menu" >
+		SELECT <include refid="DongYu.WebBase.System.Mapping.MenuMapper.columns" />
+	    <![CDATA[
+		    FROM tab_menu
+		]]>  
+		<include refid="DongYu.WebBase.System.Mapping.MenuMapper.findWhere"/>
+	</select>
+
+	<select id="getMenusByRoleIds" resultType="DongYu.WebBase.System.Entity.MenuTree">
+		select menuId as id , pId ,`name` as text,url,menuFlag  from tab_menu
+		where menuId in (select menuId from tab_relation  rela
+		where rela.roleId in
+		<foreach collection="list" index="index" item="i" open="(" separator="," close=")">
+			#{i}
+		</foreach>
+		 )
+		 order by sort
+	</select>
+
+	<select id="getMenuTreeList" resultType="DongYu.WebBase.System.Entity.MenuTree">
+		SELECT menuId as id , pId ,`name` as text,url  from tab_menu
+-- 		  WHERE menuId in (16,17,18,19,20,21,22,23,24,25,26,27,28,29,30)
+	</select>
+
+	<select id="getCount" resultType="java.lang.Long">
+		<![CDATA[
+		SELECT COUNT(*) FROM tab_menu
+	  	]]>  
+		<include refid="DongYu.WebBase.System.Mapping.MenuMapper.findWhere"/>
+	</select>
+	
+	<select id="findPage" resultMap="DongYu.WebBase.System.Mapping.MenuMapper.BaseMap">
+		SELECT <include refid="DongYu.WebBase.System.Mapping.MenuMapper.columns" />
+ 	    <![CDATA[
+		    FROM tab_menu
+		]]> 
+		<include refid="DongYu.WebBase.System.Mapping.MenuMapper.findPageWhere"/>
+      	<if test="orderBy != null" >${orderBy}</if>
+      	<if test="orderBy == null" >
+        	ORDER BY menuId DESC
+      	</if>
+      	<if test="(rowBounds != null) &amp;&amp; (rowBounds.limit != 2147483647)" >
+      		LIMIT ${rowBounds.offset} ,${rowBounds.limit}
+      	</if>
+	</select>
+	
+	<!--构建sqlWhere  -->
+ 	<sql id="findWhere">
+		<where>
+			<if test="menuId!= null" >
+		  		AND menuId=#{menuId,jdbcType=BIGINT} 
+		  	</if>
+			<if test="code!= null" >
+		  		AND code=#{code,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="pId!= null" >
+		  		AND pId=#{pId,jdbcType=BIGINT} 
+		  	</if>
+			<if test="name!= null" >
+		  		AND name=#{name,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="url!= null" >
+		  		AND url=#{url,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="sort!= null" >
+		  		AND sort=#{sort,jdbcType=INTEGER} 
+		  	</if>
+			<if test="levels!= null" >
+		  		AND levels=#{levels,jdbcType=INTEGER} 
+		  	</if>
+			<if test="menuFlag!= null" >
+		  		AND menuFlag=#{menuFlag,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="description!= null" >
+		  		AND description=#{description,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="status!= null" >
+		  		AND status=#{status,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="createTime!= null" >
+		  		AND createTime=#{createTime,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="createTimeBegin!= null" >
+		  		AND createTime&gt;=#{createTimeBegin,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="createTimeEnd!= null" >
+		  		AND createTime&lt;=#{createTimeEnd,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="updateTime!= null" >
+		  		AND updateTime=#{updateTime,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="updateTimeBegin!= null" >
+		  		AND updateTime&gt;=#{updateTimeBegin,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="updateTimeEnd!= null" >
+		  		AND updateTime&lt;=#{updateTimeEnd,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="createUser!= null" >
+		  		AND createUser=#{createUser,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="updateUser!= null" >
+		  		AND updateUser=#{updateUser,jdbcType=VARCHAR} 
+		  	</if>
+		</where>
+	</sql>
+	
+	<!--构建sqlWhere  -->
+ 	<sql id="findPageWhere">
+		<where>
+			<if test="record.menuId!= null" >
+		  		AND menuId=#{record.menuId,jdbcType=BIGINT} 
+		  	</if>
+			<if test="record.code!= null" >
+		  		AND code=#{record.code,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="record.pId!= null" >
+		  		AND pId=#{record.pId,jdbcType=BIGINT} 
+		  	</if>
+			<if test="record.name!= null" >
+		  		AND name=#{record.name,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="record.url!= null" >
+		  		AND url=#{record.url,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="record.sort!= null" >
+		  		AND sort=#{record.sort,jdbcType=INTEGER} 
+		  	</if>
+			<if test="record.levels!= null" >
+		  		AND levels=#{record.levels,jdbcType=INTEGER} 
+		  	</if>
+			<if test="record.menuFlag!= null" >
+		  		AND menuFlag=#{record.menuFlag,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="record.description!= null" >
+		  		AND description=#{record.description,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="record.status!= null" >
+		  		AND status=#{record.status,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="record.createTime!= null" >
+		  		AND createTime=#{record.createTime,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="record.createTimeBegin!= null" >
+		  		AND createTime&gt;=#{record.createTimeBegin,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="record.createTimeEnd!= null" >
+		  		AND createTime&lt;=#{record.createTimeEnd,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="record.updateTime!= null" >
+		  		AND updateTime=#{record.updateTime,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="record.updateTimeBegin!= null" >
+		  		AND updateTime&gt;=#{record.updateTimeBegin,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="record.updateTimeEnd!= null" >
+		  		AND updateTime&lt;=#{record.updateTimeEnd,jdbcType=TIMESTAMP} 
+		  	</if>
+			<if test="record.createUser!= null" >
+		  		AND createUser=#{record.createUser,jdbcType=VARCHAR} 
+		  	</if>
+			<if test="record.updateUser!= null" >
+		  		AND updateUser=#{record.updateUser,jdbcType=VARCHAR} 
+		  	</if>
+		</where>
+	</sql>
+</mapper>
+
