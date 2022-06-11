@@ -55,7 +55,6 @@
             <value>
                 /manage/login.**=anon
                 /api/**=anon
-                /ebusiness/**=anon
                 /manage/manageApp/**  =anon
                 /manage/script/** = anon
                 /**=LoginFormFilter
