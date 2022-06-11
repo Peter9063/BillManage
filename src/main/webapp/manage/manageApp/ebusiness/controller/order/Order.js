@@ -26,7 +26,6 @@
 		regViewEvent['forumViewBillConfWin button[name=btnWinFormSaveAll]']={click: this.winFromConfSave};
 		regViewEvent['forumViewBillConfWin button[name=btnWinReInitAllot]']={click: this.winFromReInitAllot};
 
-		// regViewEvent['forumViewBillFormWin combo[name=flowTemplateId]']={select:this.winFormSelect};
 		this.control(regViewEvent);
 	},
 	onLaunch:function(application){

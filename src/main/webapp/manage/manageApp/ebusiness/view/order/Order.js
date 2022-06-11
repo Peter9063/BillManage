@@ -53,7 +53,7 @@
 			{ text: '买家留言',  dataIndex: 'buyerComment' ,width:'10%'},
 			{ text: '商品留言',  dataIndex: 'productComment' ,width:'10%'},
 			{ text: '卖家备注',  dataIndex: 'sellerComment' ,width:'10%'},
-			{ text: '发货时间',  dataIndex: 'sendDate' ,width:'10%'},
+			{ text: '发货时间',  dataIndex: 'sendDate' ,xtype: 'datecolumn',   format:'Y-m-d H:i:s',width:'10%'},
 			{ text: '收件人完整地址',  dataIndex: 'receiverFullAddres' ,width:'10%'},
 			{ text: '供应商名称',  dataIndex: 'supplier' ,width:'10%'},
 			{ text: '是否有赞分销',  dataIndex: 'isFowardZan' ,width:'10%'},
@@ -74,8 +74,8 @@
 			{ text: '配送方式',  dataIndex: 'delivery' ,width:'10%'},
 			{ text: '创建时间',  dataIndex: 'createTime' ,xtype: 'datecolumn',   format:'Y-m-d H:i:s' ,width:'15%'},
 			{ text: '创建人',  dataIndex: 'createUser' ,width:'10%'},
-			{ text: '修改时间',  dataIndex: 'modifTime' ,xtype: 'datecolumn',   format:'Y-m-d H:i:s',width:'15%' },
-			{ text: '修改人',  dataIndex: 'modifUser' ,width:'10%'}
+			{ text: '修改时间',  dataIndex: 'modifyTime' ,xtype: 'datecolumn',   format:'Y-m-d H:i:s',width:'15%' },
+			{ text: '修改人',  dataIndex: 'modifyUser' ,width:'10%'}
 		];
 		var gridPanel=Ext.create('Ext.grid.Panel', {
 			region:'center',
@@ -120,11 +120,6 @@
 	            displayInfo: true
 			})
 		});
-
-
-
-
-
 
 		var searchPanel=Ext.create('Ext.form.Panel',{
 			region:'east',
