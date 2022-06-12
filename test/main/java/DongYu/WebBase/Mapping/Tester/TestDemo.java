@@ -34,5 +34,6 @@ public class TestDemo {
 //		Assert.assertEquals(module.getRadioAddress(),"863703034889001");
 //		Assert.assertNotNull(module.getId());
 //		Assert.assertEquals(module.getMesPackNum(),"000001");
+
 	}
 }

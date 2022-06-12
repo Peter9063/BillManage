@@ -1,9 +1,11 @@
 package DongYu.WebBase.Service.Tester;
 
 import DongYu.WebBase.System.Entity.SysBase.WebMessage;
+import DongYu.WebBase.System.Utils.ExcelReadUtils;
 import DongYu.WebBase.Tester.PublicJUnit4ClassRunner;
 import Yao.EBusiness.Entity.Orders;
 import Yao.EBusiness.Service.OrderService;
+import Yao.EBusiness.ServiceImp.OrderServiceImp;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.junit.Test;
@@ -13,7 +15,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.util.List;
+import java.util.ResourceBundle;
 
 
 @RunWith(PublicJUnit4ClassRunner.class)
@@ -27,22 +33,23 @@ public class TestService {
 //	org.springframework.jdbc.core.JdbcTemplate jdbcTemplate ;
 
 	@Autowired(required=true)
-	OrderService service;
+	OrderServiceImp service;
 
 	@Test
-	public void test(){
-//		Orders[] orders=new Orders[1];
-//		Orders order=new Orders();
-//		order.setDistributor("Distributor");
-//		orders[0]=order;
-//		service.save(orders);
+	public void test() throws Exception{
 
-		Orders record=new Orders();
-		WebMessage webMes=service.findPage(record,0,Integer.MAX_VALUE,"");
-		Long total=webMes.getTotal();
-		System.out.println("Total"+total.toString());
-		List<Orders> list= (List<Orders>) webMes.getData();
-		System.out.print("Data:"+ JSONArray.fromObject(list));
+//		InputStream in =this.getClass().getClassLoader().getResourceAsStream("Yao/EBusiness/Test/orders.xlsx");
+		System.out.println("=================================");
+
+//		System.out.println(this.getClass().getResource("").getPath());
+//		System.out.println(System.getProperty("user.dir")+"/src/main/webapp/WEB-INF/classes/Yao/EBusiness/Test/orders.xlsx");
+
+		String fileName=System.getProperty("user.dir")+"/src/main/webapp/WEB-INF/classes/Yao/EBusiness/Test/orders.xls";
+		FileInputStream excelFilein=new FileInputStream(fileName);
+
+		service.inputOrders(excelFilein);
+
+
 	}
 
 }
