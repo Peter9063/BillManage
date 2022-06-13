@@ -73,10 +73,25 @@ public class OrderServiceImp implements OrderService {
             throw new ServiceException("没有首列字段.");
         }
         List<Orders> ordersList=corverOrders(sheet,mapping);
+
         for(Orders item : ordersList){
-            ordersMapper.insert(item);
+            Orders searchItem=new Orders();
+            searchItem.setOrderTid(item.getOrderTid());
+            searchItem.setOrderOid(item.getOrderOid());
+            searchItem=ordersMapper.findOne(searchItem);
+            if(searchItem.getId()==null){
+                ordersMapper.insert(item);
+            }
+            else{
+                item.setId(searchItem.getId());
+                ordersMapper.update(item);
+            }
         }
-        return null;
+
+        WebMessage msg=new WebMessage();
+        msg.setSuccess(true);
+        msg.setMessage("保存成功...");
+        return msg;
     }
 
     private List<Orders> corverOrders(List<List<String>> sheet, Map<Integer, String> mapping) {

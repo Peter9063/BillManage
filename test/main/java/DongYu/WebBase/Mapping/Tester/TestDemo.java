@@ -22,9 +22,17 @@ public class TestDemo {
 
 	@Test
 	public void test(){
+
 		Orders orders=new Orders();
-		orders.setDistributor("distributor");
-		ordersMapper.insert(orders);
+		orders.setOrderTid("E20220602090003069200007");
+		orders.setOrderOid("2876270183232569435");
+		orders=ordersMapper.findOne(orders);
+		Orders orders1=new Orders();
+		orders1.setId(orders.getId());
+		orders1.setDistributor("aaa");
+		orders1.setSiteSku("siteSku");
+		orders1.setSiteSpu("siteSpu");
+		ordersMapper.update(orders1);
 
 //		Module module=new Module();
 //		module.setRadioAddress("863703034889001");
