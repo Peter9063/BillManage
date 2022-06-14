@@ -79,7 +79,7 @@ public class OrderServiceImp implements OrderService {
             searchItem.setOrderTid(item.getOrderTid());
             searchItem.setOrderOid(item.getOrderOid());
             searchItem=ordersMapper.findOne(searchItem);
-            if(searchItem.getId()==null){
+            if(searchItem==null || searchItem.getId()==null){
                 ordersMapper.insert(item);
             }
             else{

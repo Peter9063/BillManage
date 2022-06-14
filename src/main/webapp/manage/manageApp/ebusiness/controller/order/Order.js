@@ -18,125 +18,20 @@
 		regViewEvent[this.alias4Views+'form button[name=butReset]']={click: this.resetClick};
 		regViewEvent['forumViewBillFormWin button[name=btnWinFormSave]']={click:this.winFromSave};
 		regViewEvent['forumViewBillFormWin button[name=btnWinFormModif]']={click:this.winFormModif};
-		regViewEvent['forumBillInputWin button[name=btnWinFormReset]']={click:this.winFormInputerReset};
-		regViewEvent['forumBillInputWin button[name=btnWinFormSave]']={click:this.winFromInputerSave};
+		regViewEvent['OrderInputWin button[name=btnUpLoadSave]']={click:this.uploadOrders};
 
-		regViewEvent['forumViewBillConfWin button[name=btnWinFlowClear]']={click: this.flowClearClick};
-		regViewEvent['forumBillFlowClearWin button[name=btnWinFormClear]']={click: this.winFormFlowClear};
-		regViewEvent['forumViewBillConfWin button[name=btnWinFormSaveAll]']={click: this.winFromConfSave};
-		regViewEvent['forumViewBillConfWin button[name=btnWinReInitAllot]']={click: this.winFromReInitAllot};
+
+
+		// 'moduleFileUpload form button[name=btnUpLoadSave]': {
+		// 	click: this.upload4AddSave
+		// },
 
 		this.control(regViewEvent);
 	},
 	onLaunch:function(application){
 
 	},
-	/**
-	 * 参数配置窗口 保存全部
-	 * @param obj
-	 */
-	winFromConfSave:function(obj){
-		var view = this.formWin;
-		var me= this;
-		var stores = view.mainStores;
-		let updatedRecords=[] ;
-		for(let index in stores){
-			let store = stores[index];
-			updatedRecords=updatedRecords.concat(store.getUpdatedRecords());
-		}
-		var mainStore= Ext.create('manageApp.forum.store.ConfFlowInstances', {storeId: "mainStore",});
-		mainStore.loadRecords(updatedRecords,true);
-		me.syncGridDate({
-			success:function(batch, eOpts){
-				for(let index in stores){
-					stores[index].load();
-				}
-				Ext.Msg.alert('Status','保存成功.');
-			},
-			failure:function(batch, eOpts){
-				var msg='保存失败';
-				if(batch.proxy.reader.rawData.message != undefined ||
-					batch.proxy.reader.rawData.message !='' ){
-					msg=batch.proxy.reader.rawData.message;
-				}
-				Ext.Msg.alert('Status',msg);
-			},
-			scope:mainStore
-		},mainStore);
 
-	},
-	winFormFlowClear:function(obj){
-		if (!this.formWin2.formPanel.getForm().isValid()) {
-			return ;
-		}
-		let me = this;
-		let seqNum = this.formWin2.formPanel.getForm().findField("seqNum").getValue();
-		let billId = this.formWin2.formPanel.getForm().findField("billId").getValue();
-		console.log(seqNum);
-		manageApp.utils.Ajax.request2(
-			"../forum/testDevice/flowClear",//清理工单流程（按序号清理）
-			'POST',
-			{orderIndex:seqNum,billId:billId},//字符串
-			function (options, success, response) {
-				//todo da 分析结果
-				var message = JSON.parse(response.responseText)
-				if (message.success) {
-					if (me.formWin2!=null){
-						me.formWin2.close();
-					}
-					Ext.Msg.alert('Success', message.message);
-				} else {
-					Ext.Msg.alert('Error', message.message);
-				}
-			});
-	},
-	flowClearClick :function(obj){
-		var me= this;
-		var view = this.formWin;
-		me.formWin2=Ext.create('manageApp.forum.view.bill.BillFlowClearWin',{
-			width: 400,
-			height: 100,
-			title:"流程清理",
-			isSave:false,
-			records:view.records,
-			parentView:view
-		})
-	},
-	winFromReInitAllot:function(obj){
-		var me =this;
-		let formWin = me.formWin;
-		let parentView = formWin.parentView ,title = formWin.title;
-		console.log(formWin.records)
-
-		Ext.Msg.confirm("信息", "是否确认重新初始化配置信息", function (button) {
-			//     console.log(button)
-			if (button == "yes") {
-				manageApp.utils.Ajax.request2(
-					"../forum/confFlowInstance/reInitAllot",//初始化配置信息
-					'POST',
-					{billId: formWin.records[0].billId},//字符串
-					function (options, success, response) {
-						//todo da 分析结果
-						var message = JSON.parse(response.responseText)
-						if (message.success) {
-							if (me.formWin!=null){
-								me.formWin.close();
-							}
-							me.formWin=Ext.create('manageApp.forum.view.bill.BillConfWin',{
-								width: 800,
-								height: 600,
-								title:title,
-								isSave:false,
-								records:message.data,
-								parentView:parentView
-							})
-						} else {
-							Ext.Msg.alert('Error', message.message);
-						}
-					});
-			}
-		})
-	},
 	initAllot:function(obj,record,title,view,grid,url){
 		manageApp.utils.Ajax.request2(
 			url||"../forum/confFlowInstance/initAllot",//初始化配置信息
@@ -206,49 +101,6 @@
 
 
 	},
-	winFormInputerReset:function(obj, event, eOpts){
-		console.log('winFormInputerReset');
-		var treePanel=obj.up().up().down('treepanel')
-		treePanel.getStore().load();
-	},
-	winFromInputerSave:function(obj, event, eOpts){
-		var me=this;
-		console.log('winFromInputerSave');
-		var win=obj.up().up();
-		var treePanel=obj.up().up().down('treepanel');
-		var parentView=win.parentView;
-		var grid=parentView.down('grid[name=grid]');
-		var searchBar=parentView.down('form[name=searchBar]');
-
-		var date=new Date();
-		//********借助store接口进行更新*******************************
-		var store=treePanel.getStore();
-		var map=store.tree.nodeHash;
-		for(var key in map){
-			if(key!='root'){
-				map[key].set('modifTime',Ext.Date.format(date,'Y-m-d'));
-			}
-		}
-		if(store!=null || store!='undefined'){
-			me.syncGridDate({
-				success:function(batch, eOpts){
-					Ext.Msg.alert('Status','保存成功.');
-					win.close();
-					me.loadGridDate(searchBar,grid.getStore());
-				},
-				failure:function(batch, eOpts){
-					var msg='保存失败';
-					if(batch.proxy.reader.rawData.message != undefined ||
-							batch.proxy.reader.rawData.message !='' ){
-							msg=batch.proxy.reader.rawData.message;
-					}
-					Ext.Msg.alert('Status',msg);
-				},
-				scope:store
-			},store);
-		}
-		//**********************************************************
-	},
 	/**
 	 * 导出数据
 	 */
@@ -265,10 +117,9 @@
 		var me=this;
 		var view=obj.up(this.alias4Views);
 
-		this.formWin=Ext.create('manageApp.forum.view.bill.BillInputWin',{
-	        width: 800,
-	        height: 600,
-			title:'导入工单',
+		this.formWin=Ext.create('manageApp.ebusiness.view.order.OrderInputWin',{
+	        width: 400,
+			title:'导入订单',
 			parentView:view
 		});
 	},
@@ -489,5 +340,26 @@
 			scope:this.formWin
 		},gridStore);
 
-	}
+	},
+	uploadOrders:function(obj){
+		console.log('uploadOrders');
+		var win=obj.up('window');
+		var form = obj.up('form');
+		if(form.getForm().isValid()){
+			form.getForm().submit({
+				url: '..//ebusiness/order/importOrders.do',
+				waitMsg: '上传文件中...',
+				success: function(form, action) {
+					Ext.Msg.alert('success', action.result.message);
+					win.parentView.mainStore.load();
+					win.close();
+				},
+				failure: function(form, action){
+					console.log(action)
+					console.log(action.result)
+					Ext.Msg.alert('Error', action.result.message);
+				}
+			});
+		}
+	},
 });
