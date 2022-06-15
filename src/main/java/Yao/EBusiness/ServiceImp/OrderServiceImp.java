@@ -3,6 +3,7 @@ package Yao.EBusiness.ServiceImp;
 import DongYu.WebBase.System.Entity.SysBase.WebMessage;
 import DongYu.WebBase.System.Service.Exception.ServiceException;
 import DongYu.WebBase.System.Utils.ExcelReadUtils;
+import DongYu.WebBase.System.Utils.WebUtil;
 import Yao.EBusiness.Entity.Orders;
 import Yao.EBusiness.Mapping.OrdersMapper;
 import Yao.EBusiness.Service.OrderService;
@@ -12,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class OrderServiceImp implements OrderService {
@@ -64,6 +62,8 @@ public class OrderServiceImp implements OrderService {
     }
 
     public WebMessage inputOrders(InputStream excelFilein) throws ServiceException {
+        String opUser= WebUtil.getCurrentUser().getUserName();
+
         List<List<String>> sheet= ExcelReadUtils.readExcel(excelFilein);
         if(sheet.size()<1){
             throw new ServiceException("导入的是空文件.");
@@ -80,10 +80,14 @@ public class OrderServiceImp implements OrderService {
             searchItem.setOrderOid(item.getOrderOid());
             searchItem=ordersMapper.findOne(searchItem);
             if(searchItem==null || searchItem.getId()==null){
+                item.setCreateTime(new Date());
+                item.setCreateUser(opUser);
                 ordersMapper.insert(item);
             }
             else{
                 item.setId(searchItem.getId());
+                item.setModifyTime(new Date());
+                item.setModifyUser(opUser);
                 ordersMapper.update(item);
             }
         }

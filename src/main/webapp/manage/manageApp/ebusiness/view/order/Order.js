@@ -150,36 +150,31 @@
 					value:(this.params.sysType==0)?'-1':this.params.sysType
 				},
 				{
-					fieldLabel: '工单号',
-					name: 'code',
+					fieldLabel: '订单号Tid',
+					name: 'orderTid',
 					padding:'5 5 5 5'
 				},
 				{
-					fieldLabel: '产品型号',
-					name: 'productModel',
+					fieldLabel: '子单号Oid',
+					name: 'orderOid',
 					padding:'5 5 5 5'
 				},
 				{
-					fieldLabel: '产品编号',
-					name: 'productCode',
+					fieldLabel: '订单状态',
+					name: 'orderStatus',
 					padding:'5 5 5 5'
 				},
-				{
-					fieldLabel: '产品名称',
-					name: 'productName',
-					padding:'5 5 5 5'
-				},
-				{
-					xtype:'combo',
-					fieldLabel: '工单状态',
-					name: 'state',
-				    queryMode: 'local',
-				    displayField: 'name',
-				    valueField: 'value',
-				    value:'1',
-					store:manageApp.utils.Model.getConstantStore('BillState'),
-					padding:'5 5 5 5'
-				},
+				// {
+				// 	xtype:'combo',
+				// 	fieldLabel: '工单状态',
+				// 	name: 'state',
+				//     queryMode: 'local',
+				//     displayField: 'name',
+				//     valueField: 'value',
+				//     value:'1',
+				// 	store:manageApp.utils.Model.getConstantStore('BillState'),
+				// 	padding:'5 5 5 5'
+				// },
 				{
 					xtype: 'datefield',
 					fieldLabel: '创建开始时间',

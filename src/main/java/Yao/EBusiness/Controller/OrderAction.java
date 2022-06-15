@@ -54,7 +54,7 @@ public class OrderAction {
      * @param records
      * @return
      */
-    @RequestMapping(value = "/delete")
+    @RequestMapping(value = "/delete", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public WebMessage<Orders> delete(@RequestBody Orders[] records){
         return orderService.delete(records);
@@ -77,24 +77,12 @@ public class OrderAction {
     @RequestMapping(value = "/importOrders", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
     public WebMessage importOrders(@RequestParam("filePath") MultipartFile multipartFile, HttpServletResponse response) throws ServiceException, IOException {
-        WebMessage webMessage = new WebMessage();
-
-        try {
-            String fileName = multipartFile.getOriginalFilename();
-            if (!fileName.matches("^.+\\.(?i)(xls)$") && !fileName.matches("^.+\\.(?i)(xlsx)$")) {
-                throw new ServiceException("文件格式不正确");
-            }
-            InputStream ordersFile = multipartFile.getInputStream();
-            webMessage=orderService.inputOrders(ordersFile);
-
-        }catch (ServiceException e){
-            logger.error(ExceptionUtils.getFullStackTrace(e));
+        String fileName = multipartFile.getOriginalFilename();
+        if (!fileName.matches("^.+\\.(?i)(xls)$") && !fileName.matches("^.+\\.(?i)(xlsx)$")) {
+            throw new ServiceException("文件格式不正确");
         }
-        catch (Exception e) {
-            logger.error(ExceptionUtils.getFullStackTrace(e));
-            webMessage.setSuccess(false);
-            webMessage.setMessage("系统出错，联系管理员");
-        }
+        InputStream ordersFile = multipartFile.getInputStream();
+        WebMessage webMessage=orderService.inputOrders(ordersFile);
         return webMessage;
     }
 

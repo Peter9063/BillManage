@@ -39,7 +39,7 @@ public class LoginFormFilter extends FormAuthenticationFilter {
             httpServletResponse.getWriter().write(
                     JSONObject.fromObject(webMessage).toString());
         } else {//如果是普通请求进行重定向
-            httpServletResponse.sendRedirect("/DongYuWebBase/manage/login.jsp");
+            httpServletResponse.sendRedirect("/BillManage/manage/login.jsp");
         }
 
 
