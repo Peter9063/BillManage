@@ -1,0 +1,770 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+"http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+
+<mapper namespace="Yao.EBusiness.Mapping.OrdersMapper">
+
+	<resultMap id="BaseMap" type="Yao.EBusiness.Entity.Orders">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="distributor" property="distributor" jdbcType="VARCHAR"/>
+        <result column="siteName" property="siteName" jdbcType="VARCHAR"/>
+        <result column="storeName" property="storeName" jdbcType="VARCHAR"/>
+        <result column="netName" property="netName" jdbcType="VARCHAR"/>
+        <result column="orderTid" property="orderTid" jdbcType="VARCHAR"/>
+        <result column="orderOid" property="orderOid" jdbcType="VARCHAR"/>
+        <result column="expressName" property="expressName" jdbcType="VARCHAR"/>
+        <result column="trackingNum" property="trackingNum" jdbcType="VARCHAR"/>
+        <result column="receiverPhone" property="receiverPhone" jdbcType="VARCHAR"/>
+        <result column="receiver" property="receiver" jdbcType="VARCHAR"/>
+        <result column="productNotes" property="productNotes" jdbcType="VARCHAR"/>
+        <result column="receiverProvince" property="receiverProvince" jdbcType="VARCHAR"/>
+        <result column="receiverCity" property="receiverCity" jdbcType="VARCHAR"/>
+        <result column="receiverTown" property="receiverTown" jdbcType="VARCHAR"/>
+        <result column="receiverAddres" property="receiverAddres" jdbcType="VARCHAR"/>
+        <result column="receiverCardId" property="receiverCardId" jdbcType="VARCHAR"/>
+        <result column="receiverCardName" property="receiverCardName" jdbcType="VARCHAR"/>
+        <result column="siteSPU" property="siteSpu" jdbcType="VARCHAR"/>
+        <result column="siteSKU" property="siteSku" jdbcType="VARCHAR"/>
+        <result column="productName" property="productName" jdbcType="VARCHAR"/>
+        <result column="code69" property="code69" jdbcType="VARCHAR"/>
+        <result column="productID" property="productId" jdbcType="VARCHAR"/>
+        <result column="productPrice" property="productPrice" jdbcType="DECIMAL"/>
+        <result column="productSpecific" property="productSpecific" jdbcType="VARCHAR"/>
+        <result column="spuShort" property="spuShort" jdbcType="VARCHAR"/>
+        <result column="skuShort" property="skuShort" jdbcType="VARCHAR"/>
+        <result column="sellerSPU" property="sellerSpu" jdbcType="VARCHAR"/>
+        <result column="sellerSKU" property="sellerSku" jdbcType="VARCHAR"/>
+        <result column="sellerNumber" property="sellerNumber" jdbcType="DECIMAL"/>
+        <result column="sendStatus" property="sendStatus" jdbcType="VARCHAR"/>
+        <result column="salesReturnStatus" property="salesReturnStatus" jdbcType="VARCHAR"/>
+        <result column="salesReturnAmount" property="salesReturnAmount" jdbcType="DECIMAL"/>
+        <result column="buyerComment" property="buyerComment" jdbcType="VARCHAR"/>
+        <result column="productComment" property="productComment" jdbcType="VARCHAR"/>
+        <result column="sellerComment" property="sellerComment" jdbcType="VARCHAR"/>
+        <result column="sendDate" property="sendDate" jdbcType="TIMESTAMP"/>
+        <result column="receiverFullAddres" property="receiverFullAddres" jdbcType="VARCHAR"/>
+        <result column="supplier" property="supplier" jdbcType="VARCHAR"/>
+        <result column="isFowardZan" property="isFowardZan" jdbcType="BIT"/>
+        <result column="payId" property="payId" jdbcType="VARCHAR"/>
+        <result column="outOrderId" property="outOrderId" jdbcType="VARCHAR"/>
+        <result column="orderTime" property="orderTime" jdbcType="TIMESTAMP"/>
+        <result column="payTime" property="payTime" jdbcType="TIMESTAMP"/>
+        <result column="finishTime" property="finishTime" jdbcType="TIMESTAMP"/>
+        <result column="postage" property="postage" jdbcType="DECIMAL"/>
+        <result column="discount" property="discount" jdbcType="DECIMAL"/>
+        <result column="payAmount" property="payAmount" jdbcType="DECIMAL"/>
+        <result column="productAmount" property="productAmount" jdbcType="DECIMAL"/>
+        <result column="orderStatus" property="orderStatus" jdbcType="VARCHAR"/>
+        <result column="orderType" property="orderType" jdbcType="VARCHAR"/>
+        <result column="buynick" property="buynick" jdbcType="VARCHAR"/>
+        <result column="buyphone" property="buyphone" jdbcType="VARCHAR"/>
+        <result column="invoice" property="invoice" jdbcType="VARCHAR"/>
+        <result column="delivery" property="delivery" jdbcType="VARCHAR"/>
+        <result column="createUser" property="createUser" jdbcType="VARCHAR"/>
+        <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="modifyUser" property="modifyUser" jdbcType="VARCHAR"/>
+        <result column="modifyTime" property="modifyTime" jdbcType="TIMESTAMP"/>
+	</resultMap>
+
+	<!-- 用于select查询公用抽取的列 -->
+	<sql id="columns">
+	    <![CDATA[
+		t.id,t.distributor,t.siteName,t.storeName,t.netName,t.orderTid,t.orderOid,t.expressName,t.trackingNum,t.receiverPhone,t.receiver,t.productNotes,t.receiverProvince,t.receiverCity,t.receiverTown,t.receiverAddres,t.receiverCardId,t.receiverCardName,t.siteSPU,t.siteSKU,t.productName,t.code69,t.productID,t.productPrice,t.productSpecific,t.spuShort,t.skuShort,t.sellerSPU,t.sellerSKU,t.sellerNumber,t.sendStatus,t.salesReturnStatus,t.salesReturnAmount,t.buyerComment,t.productComment,t.sellerComment,t.sendDate,t.receiverFullAddres,t.supplier,t.isFowardZan,t.payId,t.outOrderId,t.orderTime,t.payTime,t.finishTime,t.postage,t.discount,t.payAmount,t.productAmount,t.orderStatus,t.orderType,t.buynick,t.buyphone,t.invoice,t.delivery,t.createUser,t.createTime,t.modifyUser,t.modifyTime
+	    ]]>
+	</sql>
+
+	<!-- useGeneratedKeys="true"(主键自增)  keyProperty="xxx" for sqlserver and mysql -->
+	<insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="Yao.EBusiness.Entity.Orders">
+    <![CDATA[
+        INSERT INTO tab_orders (
+        	id,
+        	distributor,
+        	siteName,
+        	storeName,
+        	netName,
+        	orderTid,
+        	orderOid,
+        	expressName,
+        	trackingNum,
+        	receiverPhone,
+        	receiver,
+        	productNotes,
+        	receiverProvince,
+        	receiverCity,
+        	receiverTown,
+        	receiverAddres,
+        	receiverCardId,
+        	receiverCardName,
+        	siteSPU,
+        	siteSKU,
+        	productName,
+        	code69,
+        	productID,
+        	productPrice,
+        	productSpecific,
+        	spuShort,
+        	skuShort,
+        	sellerSPU,
+        	sellerSKU,
+        	sellerNumber,
+        	sendStatus,
+        	salesReturnStatus,
+        	salesReturnAmount,
+        	buyerComment,
+        	productComment,
+        	sellerComment,
+        	sendDate,
+        	receiverFullAddres,
+        	supplier,
+        	isFowardZan,
+        	payId,
+        	outOrderId,
+        	orderTime,
+        	payTime,
+        	finishTime,
+        	postage,
+        	discount,
+        	payAmount,
+        	productAmount,
+        	orderStatus,
+        	orderType,
+        	buynick,
+        	buyphone,
+        	invoice,
+        	delivery,
+        	createUser,
+        	createTime,
+        	modifyUser,
+        	modifyTime
+        ) VALUES (
+        	#{id,jdbcType=BIGINT},
+        	#{distributor,jdbcType=VARCHAR},
+        	#{siteName,jdbcType=VARCHAR},
+        	#{storeName,jdbcType=VARCHAR},
+        	#{netName,jdbcType=VARCHAR},
+        	#{orderTid,jdbcType=VARCHAR},
+        	#{orderOid,jdbcType=VARCHAR},
+        	#{expressName,jdbcType=VARCHAR},
+        	#{trackingNum,jdbcType=VARCHAR},
+        	#{receiverPhone,jdbcType=VARCHAR},
+        	#{receiver,jdbcType=VARCHAR},
+        	#{productNotes,jdbcType=VARCHAR},
+        	#{receiverProvince,jdbcType=VARCHAR},
+        	#{receiverCity,jdbcType=VARCHAR},
+        	#{receiverTown,jdbcType=VARCHAR},
+        	#{receiverAddres,jdbcType=VARCHAR},
+        	#{receiverCardId,jdbcType=VARCHAR},
+        	#{receiverCardName,jdbcType=VARCHAR},
+        	#{siteSpu,jdbcType=VARCHAR},
+        	#{siteSku,jdbcType=VARCHAR},
+        	#{productName,jdbcType=VARCHAR},
+        	#{code69,jdbcType=VARCHAR},
+        	#{productId,jdbcType=VARCHAR},
+        	#{productPrice,jdbcType=DECIMAL},
+        	#{productSpecific,jdbcType=VARCHAR},
+        	#{spuShort,jdbcType=VARCHAR},
+        	#{skuShort,jdbcType=VARCHAR},
+        	#{sellerSpu,jdbcType=VARCHAR},
+        	#{sellerSku,jdbcType=VARCHAR},
+        	#{sellerNumber,jdbcType=DECIMAL},
+        	#{sendStatus,jdbcType=VARCHAR},
+        	#{salesReturnStatus,jdbcType=VARCHAR},
+        	#{salesReturnAmount,jdbcType=DECIMAL},
+        	#{buyerComment,jdbcType=VARCHAR},
+        	#{productComment,jdbcType=VARCHAR},
+        	#{sellerComment,jdbcType=VARCHAR},
+        	#{sendDate,jdbcType=TIMESTAMP},
+        	#{receiverFullAddres,jdbcType=VARCHAR},
+        	#{supplier,jdbcType=VARCHAR},
+        	#{isFowardZan,jdbcType=BIT},
+        	#{payId,jdbcType=VARCHAR},
+        	#{outOrderId,jdbcType=VARCHAR},
+        	#{orderTime,jdbcType=TIMESTAMP},
+        	#{payTime,jdbcType=TIMESTAMP},
+        	#{finishTime,jdbcType=TIMESTAMP},
+        	#{postage,jdbcType=DECIMAL},
+        	#{discount,jdbcType=DECIMAL},
+        	#{payAmount,jdbcType=DECIMAL},
+        	#{productAmount,jdbcType=DECIMAL},
+        	#{orderStatus,jdbcType=VARCHAR},
+        	#{orderType,jdbcType=VARCHAR},
+        	#{buynick,jdbcType=VARCHAR},
+        	#{buyphone,jdbcType=VARCHAR},
+        	#{invoice,jdbcType=VARCHAR},
+        	#{delivery,jdbcType=VARCHAR},
+        	#{createUser,jdbcType=VARCHAR},
+        	#{createTime,jdbcType=TIMESTAMP},
+        	#{modifyUser,jdbcType=VARCHAR},
+        	#{modifyTime,jdbcType=TIMESTAMP}
+        )
+    ]]>
+	<!--
+		oracle: order="BEFORE" SELECT sequenceName.nextval AS ID FROM DUAL
+		DB2: order="BEFORE"" values nextval for sequenceName
+	<selectKey resultType="java.lang.Long" order="BEFORE" keyProperty="userId">
+		SELECT sequenceName.nextval AS ID FROM DUAL
+       </selectKey>
+	-->
+	</insert>
+
+	<update id="update" parameterType="Yao.EBusiness.Entity.Orders">
+		UPDATE tab_orders
+		<set >
+			<if test="distributor != null" >
+				<![CDATA[
+	              distributor =#{distributor,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="siteName != null" >
+				<![CDATA[
+	              siteName =#{siteName,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="storeName != null" >
+				<![CDATA[
+	              storeName =#{storeName,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="netName != null" >
+				<![CDATA[
+	              netName =#{netName,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="orderTid != null" >
+				<![CDATA[
+	              orderTid =#{orderTid,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="orderOid != null" >
+				<![CDATA[
+	              orderOid =#{orderOid,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="expressName != null" >
+				<![CDATA[
+	              expressName =#{expressName,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="trackingNum != null" >
+				<![CDATA[
+	              trackingNum =#{trackingNum,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="receiverPhone != null" >
+				<![CDATA[
+	              receiverPhone =#{receiverPhone,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="receiver != null" >
+				<![CDATA[
+	              receiver =#{receiver,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="productNotes != null" >
+				<![CDATA[
+	              productNotes =#{productNotes,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="receiverProvince != null" >
+				<![CDATA[
+	              receiverProvince =#{receiverProvince,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="receiverCity != null" >
+				<![CDATA[
+	              receiverCity =#{receiverCity,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="receiverTown != null" >
+				<![CDATA[
+	              receiverTown =#{receiverTown,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="receiverAddres != null" >
+				<![CDATA[
+	              receiverAddres =#{receiverAddres,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="receiverCardId != null" >
+				<![CDATA[
+	              receiverCardId =#{receiverCardId,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="receiverCardName != null" >
+				<![CDATA[
+	              receiverCardName =#{receiverCardName,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="siteSpu != null" >
+				<![CDATA[
+	              siteSPU =#{siteSpu,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="siteSku != null" >
+				<![CDATA[
+	              siteSKU =#{siteSku,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="productName != null" >
+				<![CDATA[
+	              productName =#{productName,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="code69 != null" >
+				<![CDATA[
+	              code69 =#{code69,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="productId != null" >
+				<![CDATA[
+	              productID =#{productId,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="productPrice != null" >
+				<![CDATA[
+	              productPrice =#{productPrice,jdbcType=DECIMAL},
+             ]]>
+			</if>
+			<if test="productSpecific != null" >
+				<![CDATA[
+	              productSpecific =#{productSpecific,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="spuShort != null" >
+				<![CDATA[
+	              spuShort =#{spuShort,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="skuShort != null" >
+				<![CDATA[
+	              skuShort =#{skuShort,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="sellerSpu != null" >
+				<![CDATA[
+	              sellerSPU =#{sellerSpu,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="sellerSku != null" >
+				<![CDATA[
+	              sellerSKU =#{sellerSku,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="sellerNumber != null" >
+				<![CDATA[
+	              sellerNumber =#{sellerNumber,jdbcType=DECIMAL},
+             ]]>
+			</if>
+			<if test="sendStatus != null" >
+				<![CDATA[
+	              sendStatus =#{sendStatus,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="salesReturnStatus != null" >
+				<![CDATA[
+	              salesReturnStatus =#{salesReturnStatus,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="salesReturnAmount != null" >
+				<![CDATA[
+	              salesReturnAmount =#{salesReturnAmount,jdbcType=DECIMAL},
+             ]]>
+			</if>
+			<if test="buyerComment != null" >
+				<![CDATA[
+	              buyerComment =#{buyerComment,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="productComment != null" >
+				<![CDATA[
+	              productComment =#{productComment,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="sellerComment != null" >
+				<![CDATA[
+	              sellerComment =#{sellerComment,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="sendDate != null" >
+				<![CDATA[
+	              sendDate =#{sendDate,jdbcType=TIMESTAMP},
+             ]]>
+			</if>
+			<if test="receiverFullAddres != null" >
+				<![CDATA[
+	              receiverFullAddres =#{receiverFullAddres,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="supplier != null" >
+				<![CDATA[
+	              supplier =#{supplier,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="isFowardZan != null" >
+				<![CDATA[
+	              isFowardZan =#{isFowardZan,jdbcType=BIT},
+             ]]>
+			</if>
+			<if test="payId != null" >
+				<![CDATA[
+	              payId =#{payId,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="outOrderId != null" >
+				<![CDATA[
+	              outOrderId =#{outOrderId,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="orderTime != null" >
+				<![CDATA[
+	              orderTime =#{orderTime,jdbcType=TIMESTAMP},
+             ]]>
+			</if>
+			<if test="payTime != null" >
+				<![CDATA[
+	              payTime =#{payTime,jdbcType=TIMESTAMP},
+             ]]>
+			</if>
+			<if test="finishTime != null" >
+				<![CDATA[
+	              finishTime =#{finishTime,jdbcType=TIMESTAMP},
+             ]]>
+			</if>
+			<if test="postage != null" >
+				<![CDATA[
+	              postage =#{postage,jdbcType=DECIMAL},
+             ]]>
+			</if>
+			<if test="discount != null" >
+				<![CDATA[
+	              discount =#{discount,jdbcType=DECIMAL},
+             ]]>
+			</if>
+			<if test="payAmount != null" >
+				<![CDATA[
+	              payAmount =#{payAmount,jdbcType=DECIMAL},
+             ]]>
+			</if>
+			<if test="productAmount != null" >
+				<![CDATA[
+	              productAmount =#{productAmount,jdbcType=DECIMAL},
+             ]]>
+			</if>
+			<if test="orderStatus != null" >
+				<![CDATA[
+	              orderStatus =#{orderStatus,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="orderType != null" >
+				<![CDATA[
+	              orderType =#{orderType,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="buynick != null" >
+				<![CDATA[
+	              buynick =#{buynick,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="buyphone != null" >
+				<![CDATA[
+	              buyphone =#{buyphone,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="invoice != null" >
+				<![CDATA[
+	              invoice =#{invoice,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="delivery != null" >
+				<![CDATA[
+	              delivery =#{delivery,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="createUser != null" >
+				<![CDATA[
+	              createUser =#{createUser,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="createTime != null" >
+				<![CDATA[
+	              createTime =#{createTime,jdbcType=TIMESTAMP},
+             ]]>
+			</if>
+			<if test="modifyUser != null" >
+				<![CDATA[
+	              modifyUser =#{modifyUser,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="modifyTime != null" >
+				<![CDATA[
+	              modifyTime =#{modifyTime,jdbcType=TIMESTAMP}
+             ]]>
+			</if>
+		</set>
+		<![CDATA[
+        WHERE
+        	id = #{id}
+ 		]]>
+	</update>
+
+    <!--传入id, 测试是否支持主键非id  -->
+    <delete id="deleteById" parameterType="Yao.EBusiness.Entity.Orders">
+    <![CDATA[
+        DELETE FROM tab_orders
+        WHERE
+        id = #{id}
+    ]]>
+    </delete>
+
+    <!--传入id, 测试是否支持主键非id  -->
+    <select id="findOne" resultMap="Yao.EBusiness.Mapping.OrdersMapper.BaseMap" parameterType="Yao.EBusiness.Entity.Orders" >
+		SELECT <include refid="Yao.EBusiness.Mapping.OrdersMapper.columns" />
+	    <![CDATA[
+		    FROM tab_orders t
+		]]>
+		<include refid="Yao.EBusiness.Mapping.OrdersMapper.findPageWhere"/>
+	</select>
+
+	<select id="getCount" resultType="java.lang.Long">
+		<![CDATA[
+		SELECT COUNT(*) FROM tab_orders t
+	  	]]>
+		<include refid="Yao.EBusiness.Mapping.OrdersMapper.findPageWhere"/>
+	</select>
+
+	<select id="findPage" resultMap="Yao.EBusiness.Mapping.OrdersMapper.BaseMap">
+		SELECT <include refid="Yao.EBusiness.Mapping.OrdersMapper.columns" />
+ 	    <![CDATA[
+		    FROM tab_orders t
+		]]>
+		<include refid="Yao.EBusiness.Mapping.OrdersMapper.findPageWhere"/>
+      	<if test="orderBy != null" >${orderBy}</if>
+      	<if test="orderBy == null" >
+        	ORDER BY t.id DESC
+      	</if>
+      	<if test="(rowBounds != null) &amp;&amp; (rowBounds.limit != 2147483647)" >
+      		LIMIT ${rowBounds.offset} ,${rowBounds.limit}
+      	</if>
+	</select>
+
+	<!--构建sqlWhere  -->
+ 	<sql id="findPageWhere">
+		<where>
+			<if test="record.id!= null" >
+		  		AND t.id=#{record.id,jdbcType=BIGINT}
+		  	</if>
+			<if test="record.distributor!= null" >
+		  		AND t.distributor=#{record.distributor,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.siteName!= null" >
+		  		AND t.siteName=#{record.siteName,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.storeName!= null" >
+		  		AND t.storeName=#{record.storeName,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.netName!= null" >
+		  		AND t.netName=#{record.netName,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.orderTid!= null" >
+		  		AND t.orderTid=#{record.orderTid,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.orderOid!= null" >
+		  		AND t.orderOid=#{record.orderOid,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.expressName!= null" >
+		  		AND t.expressName=#{record.expressName,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.trackingNum!= null" >
+		  		AND t.trackingNum=#{record.trackingNum,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.receiverPhone!= null" >
+		  		AND t.receiverPhone=#{record.receiverPhone,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.receiver!= null" >
+		  		AND t.receiver=#{record.receiver,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.productNotes!= null" >
+		  		AND t.productNotes=#{record.productNotes,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.receiverProvince!= null" >
+		  		AND t.receiverProvince=#{record.receiverProvince,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.receiverCity!= null" >
+		  		AND t.receiverCity=#{record.receiverCity,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.receiverTown!= null" >
+		  		AND t.receiverTown=#{record.receiverTown,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.receiverAddres!= null" >
+		  		AND t.receiverAddres=#{record.receiverAddres,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.receiverCardId!= null" >
+		  		AND t.receiverCardId=#{record.receiverCardId,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.receiverCardName!= null" >
+		  		AND t.receiverCardName=#{record.receiverCardName,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.siteSpu!= null" >
+		  		AND t.siteSPU=#{record.siteSpu,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.siteSku!= null" >
+		  		AND t.siteSKU=#{record.siteSku,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.productName!= null" >
+		  		AND t.productName=#{record.productName,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.code69!= null" >
+		  		AND t.code69=#{record.code69,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.productId!= null" >
+		  		AND t.productID=#{record.productId,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.productPrice!= null" >
+		  		AND t.productPrice=#{record.productPrice,jdbcType=DECIMAL}
+		  	</if>
+			<if test="record.productSpecific!= null" >
+		  		AND t.productSpecific=#{record.productSpecific,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.spuShort!= null" >
+		  		AND t.spuShort=#{record.spuShort,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.skuShort!= null" >
+		  		AND t.skuShort=#{record.skuShort,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.sellerSpu!= null" >
+		  		AND t.sellerSPU=#{record.sellerSpu,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.sellerSku!= null" >
+		  		AND t.sellerSKU=#{record.sellerSku,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.sellerNumber!= null" >
+		  		AND t.sellerNumber=#{record.sellerNumber,jdbcType=DECIMAL}
+		  	</if>
+			<if test="record.sendStatus!= null" >
+		  		AND t.sendStatus=#{record.sendStatus,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.salesReturnStatus!= null" >
+		  		AND t.salesReturnStatus=#{record.salesReturnStatus,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.salesReturnAmount!= null" >
+		  		AND t.salesReturnAmount=#{record.salesReturnAmount,jdbcType=DECIMAL}
+		  	</if>
+			<if test="record.buyerComment!= null" >
+		  		AND t.buyerComment=#{record.buyerComment,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.productComment!= null" >
+		  		AND t.productComment=#{record.productComment,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.sellerComment!= null" >
+		  		AND t.sellerComment=#{record.sellerComment,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.sendDate!= null" >
+		  		AND t.sendDate=#{record.sendDate,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.sendDateBegin!= null" >
+		  		AND t.sendDate&gt;=#{record.sendDateBegin,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.sendDateEnd!= null" >
+		  		AND t.sendDate&lt;=#{record.sendDateEnd,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.receiverFullAddres!= null" >
+		  		AND t.receiverFullAddres=#{record.receiverFullAddres,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.supplier!= null" >
+		  		AND t.supplier=#{record.supplier,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.isFowardZan!= null" >
+		  		AND t.isFowardZan=#{record.isFowardZan,jdbcType=BIT}
+		  	</if>
+			<if test="record.payId!= null" >
+		  		AND t.payId=#{record.payId,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.outOrderId!= null" >
+		  		AND t.outOrderId=#{record.outOrderId,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.orderTime!= null" >
+		  		AND t.orderTime=#{record.orderTime,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.orderTimeBegin!= null" >
+		  		AND t.orderTime&gt;=#{record.orderTimeBegin,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.orderTimeEnd!= null" >
+		  		AND t.orderTime&lt;=#{record.orderTimeEnd,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.payTime!= null" >
+		  		AND t.payTime=#{record.payTime,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.payTimeBegin!= null" >
+		  		AND t.payTime&gt;=#{record.payTimeBegin,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.payTimeEnd!= null" >
+		  		AND t.payTime&lt;=#{record.payTimeEnd,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.finishTime!= null" >
+		  		AND t.finishTime=#{record.finishTime,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.finishTimeBegin!= null" >
+		  		AND t.finishTime&gt;=#{record.finishTimeBegin,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.finishTimeEnd!= null" >
+		  		AND t.finishTime&lt;=#{record.finishTimeEnd,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.postage!= null" >
+		  		AND t.postage=#{record.postage,jdbcType=DECIMAL}
+		  	</if>
+			<if test="record.discount!= null" >
+		  		AND t.discount=#{record.discount,jdbcType=DECIMAL}
+		  	</if>
+			<if test="record.payAmount!= null" >
+		  		AND t.payAmount=#{record.payAmount,jdbcType=DECIMAL}
+		  	</if>
+			<if test="record.productAmount!= null" >
+		  		AND t.productAmount=#{record.productAmount,jdbcType=DECIMAL}
+		  	</if>
+			<if test="record.orderStatus!= null" >
+		  		AND t.orderStatus=#{record.orderStatus,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.orderType!= null" >
+		  		AND t.orderType=#{record.orderType,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.buynick!= null" >
+		  		AND t.buynick=#{record.buynick,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.buyphone!= null" >
+		  		AND t.buyphone=#{record.buyphone,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.invoice!= null" >
+		  		AND t.invoice=#{record.invoice,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.delivery!= null" >
+		  		AND t.delivery=#{record.delivery,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.createUser!= null" >
+		  		AND t.createUser=#{record.createUser,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.createTime!= null" >
+		  		AND t.createTime=#{record.createTime,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.createTimeBegin!= null" >
+		  		AND t.createTime&gt;=#{record.createTimeBegin,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.createTimeEnd!= null" >
+		  		AND t.createTime&lt;=#{record.createTimeEnd,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.modifyUser!= null" >
+		  		AND t.modifyUser=#{record.modifyUser,jdbcType=VARCHAR}
+		  	</if>
+			<if test="record.modifyTime!= null" >
+		  		AND t.modifyTime=#{record.modifyTime,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.modifyTimeBegin!= null" >
+		  		AND t.modifyTime&gt;=#{record.modifyTimeBegin,jdbcType=TIMESTAMP}
+		  	</if>
+			<if test="record.modifyTimeEnd!= null" >
+		  		AND t.modifyTime&lt;=#{record.modifyTimeEnd,jdbcType=TIMESTAMP}
+		  	</if>
+		</where>
+	</sql>
+</mapper>
+
