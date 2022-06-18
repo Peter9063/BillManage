@@ -1,6 +1,7 @@
 package Yao.EBusiness.Controller;
 
 
+import DongYu.WebBase.System.Entity.SysBase.Sorte;
 import DongYu.WebBase.System.Service.Exception.ServiceException;
 import Yao.EBusiness.Entity.Orders;
 import DongYu.WebBase.System.Entity.SysBase.WebMessage;
@@ -71,7 +72,8 @@ public class OrderAction {
     @RequestMapping(value = "/findPage")
     @ResponseBody
     public WebMessage findPage(Orders record, Integer start, Integer limit, String sort){
-        return orderService.findPage(record,start,limit,sort);
+        Sorte[] sortes = Sorte.parserSorte(sort);
+        return orderService.findPage(record,start,limit,sortes);
     }
 
     @RequestMapping(value = "/importOrders", method = {RequestMethod.GET, RequestMethod.POST})

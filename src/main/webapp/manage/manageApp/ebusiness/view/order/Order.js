@@ -164,6 +164,11 @@
 					name: 'orderStatus',
 					padding:'5 5 5 5'
 				},
+				{
+					fieldLabel: '快递单号',
+					name: 'trackingNum',
+					padding:'5 5 5 5'
+				},
 				// {
 				// 	xtype:'combo',
 				// 	fieldLabel: '工单状态',

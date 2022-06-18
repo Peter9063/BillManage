@@ -1,5 +1,6 @@
 package Yao.EBusiness.ServiceImp;
 
+import DongYu.WebBase.System.Entity.SysBase.Sorte;
 import DongYu.WebBase.System.Entity.SysBase.WebMessage;
 import DongYu.WebBase.System.Service.Exception.ServiceException;
 import DongYu.WebBase.System.Utils.ExcelReadUtils;
@@ -7,12 +8,14 @@ import DongYu.WebBase.System.Utils.WebUtil;
 import Yao.EBusiness.Entity.Orders;
 import Yao.EBusiness.Mapping.OrdersMapper;
 import Yao.EBusiness.Service.OrderService;
-import net.sf.json.JSONObject;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.ConvertUtils;
+import org.apache.commons.beanutils.converters.DateConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 
 @Service
@@ -50,9 +53,9 @@ public class OrderServiceImp implements OrderService {
     }
 
     @Override
-    public WebMessage findPage(Orders record, Integer start, Integer limit, String sort) {
+    public WebMessage findPage(Orders record, Integer start, Integer limit, Sorte[] sorts) {
         Long total=ordersMapper.getCount(record);
-        List<Orders> list=ordersMapper.findPage(record,new DongYu.WebBase.System.Mapping.RowBounds(start,limit),sort);
+        List<Orders> list=ordersMapper.findPage(record,new DongYu.WebBase.System.Mapping.RowBounds(start,limit),Sorte.getSqlOrderStr(sorts));
         WebMessage msg=new WebMessage();
         msg.setTotal(total);
         msg.setData(list);
@@ -62,7 +65,14 @@ public class OrderServiceImp implements OrderService {
     }
 
     public WebMessage inputOrders(InputStream excelFilein) throws ServiceException {
-        String opUser= WebUtil.getCurrentUser().getUserName();
+        String opUser="";
+        try{
+            opUser=WebUtil.getCurrentUser().getUserName();
+        }
+        catch (Exception ex){
+            opUser="";
+        }
+
 
         List<List<String>> sheet= ExcelReadUtils.readExcel(excelFilein);
         if(sheet.size()<1){

@@ -1,6 +1,7 @@
 package Yao.EBusiness.Service;
 
 
+import DongYu.WebBase.System.Entity.SysBase.Sorte;
 import DongYu.WebBase.System.Entity.SysBase.WebMessage;
 import DongYu.WebBase.System.Service.Exception.ServiceException;
 import Yao.EBusiness.Entity.Orders;
@@ -17,7 +18,7 @@ public interface OrderService {
 
     public Long getCount(Orders record);
 
-    public WebMessage findPage(Orders record, Integer start, Integer limit, String sort);
+    public WebMessage findPage(Orders record, Integer start, Integer limit, Sorte[] sorts);
 
     public WebMessage inputOrders(InputStream excelFilein) throws ServiceException;
 
