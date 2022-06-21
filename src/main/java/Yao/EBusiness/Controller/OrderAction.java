@@ -10,6 +10,7 @@ import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -86,6 +87,14 @@ public class OrderAction {
         InputStream ordersFile = multipartFile.getInputStream();
         WebMessage webMessage=orderService.inputOrders(ordersFile);
         return webMessage;
+    }
+
+    @RequestMapping(value = "/exportOrders", method = {RequestMethod.GET, RequestMethod.POST})
+    @ResponseBody
+    public ResponseEntity<byte[]> exportOrders(Orders record) throws Exception {
+
+        
+        return null;
     }
 
 }

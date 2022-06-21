@@ -36,7 +36,7 @@ public class TestService {
 	OrderServiceImp service;
 
 	@Test
-	public void test() throws Exception{
+	public void excelInput() throws Exception{
 
 //		InputStream in =this.getClass().getClassLoader().getResourceAsStream("Yao/EBusiness/Test/orders.xlsx");
 		System.out.println("=================================");
@@ -48,6 +48,11 @@ public class TestService {
 		FileInputStream excelFilein=new FileInputStream(fileName);
 
 		service.inputOrders(excelFilein);
+
+	}
+
+	@Test
+	public void excelOutput() throws Exception{
 
 
 	}

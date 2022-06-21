@@ -109,8 +109,10 @@
 		var view=obj.up(this.alias4Views);
 		var searchBar=view.down(this.alias4SearchBar);
 		var conditions=manageApp.utils.Form.getCommitParam(searchBar.getForm());
-		conditions=Ext.Object.toQueryString({conditions:Ext.encode(conditions)})
-		window.open('../forum/testBill/bill/exportExcel.do?'+conditions);
+		conditions=Ext.Object.toQueryString(conditions);
+		console.log(conditions);
+		window.open('../ebusiness/order/exportOrders.do?'+conditions);
+
 	},
 	inputClick:function(obj, event, eOpts){
 		console.log('inputClick');
