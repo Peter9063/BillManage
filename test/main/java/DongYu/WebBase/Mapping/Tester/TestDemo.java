@@ -1,5 +1,6 @@
 package DongYu.WebBase.Mapping.Tester;
 
+import DongYu.WebBase.System.Mapping.RowBounds;
 import DongYu.WebBase.Tester.PublicJUnit4ClassRunner;
 import Yao.EBusiness.Entity.Orders;
 import Yao.EBusiness.Mapping.OrdersMapper;
@@ -22,17 +23,21 @@ public class TestDemo {
 
 	@Test
 	public void test(){
-
 		Orders orders=new Orders();
-		orders.setOrderTid("E20220602090003069200007");
-		orders.setOrderOid("2876270183232569435");
-		orders=ordersMapper.findOne(orders);
-		Orders orders1=new Orders();
-		orders1.setId(orders.getId());
-		orders1.setDistributor("aaa");
-		orders1.setSiteSku("siteSku");
-		orders1.setSiteSpu("siteSpu");
-		ordersMapper.update(orders1);
+		orders.setUuid("null");
+		orders.setOrderStatus("待发货");
+		ordersMapper.waitSendExport(orders,new RowBounds(0,Integer.MAX_VALUE),null);
+
+//		Orders orders=new Orders();
+//		orders.setOrderTid("E20220602090003069200007");
+//		orders.setOrderOid("2876270183232569435");
+//		orders=ordersMapper.findOne(orders);
+//		Orders orders1=new Orders();
+//		orders1.setId(orders.getId());
+//		orders1.setDistributor("aaa");
+//		orders1.setSiteSku("siteSku");
+//		orders1.setSiteSpu("siteSpu");
+//		ordersMapper.update(orders1);
 
 //		Module module=new Module();
 //		module.setRadioAddress("863703034889001");

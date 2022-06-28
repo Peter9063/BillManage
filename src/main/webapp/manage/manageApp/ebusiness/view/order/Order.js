@@ -24,6 +24,8 @@
 			{ text: '网点名称',  dataIndex: 'netName' ,width:'10%'},
 			{ text: '订单号Tid',  dataIndex: 'orderTid' ,width:'10%'},
 			{ text: '子单号Oid',  dataIndex: 'orderOid' ,width:'10%'},
+			{ text: '商品规格',  dataIndex: 'productSpecific' ,width:'10%'},
+			{ text: '商品数量',  dataIndex: 'sellerNumber' ,width:'10%'},
 			{ text: '快递公司',  dataIndex: 'expressName' ,width:'10%'},
 			{ text: '快递单号',  dataIndex: 'trackingNum' ,width:'10%'},
 			{ text: '收件人手机号码',  dataIndex: 'receiverPhone' ,width:'10%'},
@@ -41,12 +43,10 @@
 			{ text: '69码',  dataIndex: 'code69' ,width:'10%'},
 			{ text: '商品ID',  dataIndex: 'productID' ,width:'10%'},
 			{ text: '商品单价',  dataIndex: 'productPrice' ,width:'10%'},
-			{ text: '商品规格',  dataIndex: 'productSpecific' ,width:'10%'},
 			{ text: 'SPU简称',  dataIndex: 'spuShort' ,width:'10%'},
 			{ text: 'SKU简称',  dataIndex: 'skuShort' ,width:'10%'},
 			{ text: '商家SPU编码',  dataIndex: 'sellerSPU' ,width:'10%'},
 			{ text: '商家SKU编码',  dataIndex: 'sellerSKU' ,width:'10%'},
-			{ text: '商品数量',  dataIndex: 'sellerNumber' ,width:'10%'},
 			{ text: '商品发货状态',  dataIndex: 'sendStatus' ,width:'10%'},
 			{ text: '退款状态',  dataIndex: 'salesReturnStatus' ,width:'10%'},
 			{ text: '退款金额',  dataIndex: 'salesReturnAmount' ,width:'10%'},
@@ -96,12 +96,22 @@
 				 },'-',{
 						xtype: 'button',
 						name:'butInput',
-						text: '导入',
+						text: '新订单导入',
 						width: 60
 				 },'-',{
 					xtype: 'button',
+					name:'butSendedInput',
+					text: '快递单导入',
+					width: 60
+				},'-',{
+					xtype: 'button',
 					name:'butExport',
-					text: '导出',
+					text: '全部导出',
+					width: 60
+				},'-',{
+					xtype: 'button',
+					name:'butWaitSendExport',
+					text: '待发货导出',
 					width: 60
 				},'-',{
 					xtype: 'button',

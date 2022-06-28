@@ -7,6 +7,7 @@ import DongYu.WebBase.System.Service.Exception.ServiceException;
 import Yao.EBusiness.Entity.Orders;
 
 import java.io.InputStream;
+import java.util.List;
 
 public interface OrderService {
 
@@ -21,5 +22,9 @@ public interface OrderService {
     public WebMessage findPage(Orders record, Integer start, Integer limit, Sorte[] sorts);
 
     public WebMessage inputOrders(InputStream excelFilein) throws ServiceException;
+
+    public WebMessage mergeOrder();
+
+    public List<Orders> waitSendExport(Orders record);
 
 }

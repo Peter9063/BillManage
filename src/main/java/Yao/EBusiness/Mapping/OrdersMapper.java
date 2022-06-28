@@ -6,6 +6,8 @@
 package Yao.EBusiness.Mapping;
 
 import java.util.List;
+
+import DongYu.WebBase.System.Mapping.RowBounds;
 import org.apache.ibatis.annotations.Param;
 import Yao.EBusiness.Entity.*;
 import java.util.Date;
@@ -45,4 +47,7 @@ public interface OrdersMapper {
 								@Param("rowBounds")DongYu.WebBase.System.Mapping.RowBounds rowBounds,
 								@Param("orderBy")String orderBy);
 
+	public List<Yao.EBusiness.Entity.Orders>  waitSendExport(@Param("record")Yao.EBusiness.Entity.Orders record,
+															 @Param("rowBounds")DongYu.WebBase.System.Mapping.RowBounds rowBounds,
+															 @Param("orderBy")String orderBy);
 }

@@ -240,6 +240,13 @@ public class Orders {
      * 配送方式
      */
 	private String delivery;
+
+
+
+    /**
+     * 虚拟单号
+     */
+    private String uuid;
     /**
      *
      */
@@ -1189,5 +1196,12 @@ public class Orders {
         return this.modifyTimeEnd;
     }
 
+    public String getUuid() {
+        return uuid;
+    }
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
 }

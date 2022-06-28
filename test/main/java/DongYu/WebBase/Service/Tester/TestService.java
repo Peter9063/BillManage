@@ -37,17 +37,13 @@ public class TestService {
 
 	@Test
 	public void excelInput() throws Exception{
+//		System.out.println("=================================");
+//		String fileName=System.getProperty("user.dir")+"/src/main/webapp/WEB-INF/classes/Yao/EBusiness/Test/orders.xls";
+//		FileInputStream excelFilein=new FileInputStream(fileName);
+//		service.inputOrders(excelFilein);
 
-//		InputStream in =this.getClass().getClassLoader().getResourceAsStream("Yao/EBusiness/Test/orders.xlsx");
-		System.out.println("=================================");
+		service.mergeOrder();
 
-//		System.out.println(this.getClass().getResource("").getPath());
-//		System.out.println(System.getProperty("user.dir")+"/src/main/webapp/WEB-INF/classes/Yao/EBusiness/Test/orders.xlsx");
-
-		String fileName=System.getProperty("user.dir")+"/src/main/webapp/WEB-INF/classes/Yao/EBusiness/Test/orders.xls";
-		FileInputStream excelFilein=new FileInputStream(fileName);
-
-		service.inputOrders(excelFilein);
 
 	}
 

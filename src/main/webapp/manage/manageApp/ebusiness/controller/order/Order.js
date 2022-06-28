@@ -11,6 +11,8 @@
 		var regViewEvent={};
 		regViewEvent[this.alias4Views+'grid button[name=butInput]']={click: this.inputClick};
 		regViewEvent[this.alias4Views+'grid button[name=butExport]']={click: this.exportClick};
+		regViewEvent[this.alias4Views+'grid button[name=butWaitSendExport]']={click: this.waitSendExportClick};
+		regViewEvent[this.alias4Views+'grid button[name=butSendedInput]']={click: this.sendedInputClick};
 		regViewEvent[this.alias4Views+'grid button[name=butAdd]']={click: this.saveClick};
 		regViewEvent[this.alias4Views+'grid button[name=butEdit]']={click: this.editClick};
 		regViewEvent[this.alias4Views+'grid button[name=butDel]']={click: this.delClick};
@@ -113,6 +115,27 @@
 		console.log(conditions);
 		window.open('../ebusiness/order/exportOrders.do?'+conditions);
 
+	},
+	waitSendExportClick:function(obj){
+		console.log('exportClick');
+		var view=obj.up(this.alias4Views);
+		var searchBar=view.down(this.alias4SearchBar);
+		var conditions=manageApp.utils.Form.getCommitParam(searchBar.getForm());
+		conditions=Ext.Object.toQueryString(conditions);
+		console.log(conditions);
+		window.open('../ebusiness/order/exportOrders.do?'+conditions);
+
+	},
+	sendedInputClick:function(obj, event, eOpts){
+		console.log('sendedInputClick');
+		// var me=this;
+		// var view=obj.up(this.alias4Views);
+		//
+		// this.formWin=Ext.create('manageApp.ebusiness.view.order.OrderInputWin',{
+		// 	width: 400,
+		// 	title:'导入订单',
+		// 	parentView:view
+		// });
 	},
 	inputClick:function(obj, event, eOpts){
 		console.log('inputClick');

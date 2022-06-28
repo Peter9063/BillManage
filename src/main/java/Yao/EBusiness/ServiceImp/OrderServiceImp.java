@@ -2,6 +2,7 @@ package Yao.EBusiness.ServiceImp;
 
 import DongYu.WebBase.System.Entity.SysBase.Sorte;
 import DongYu.WebBase.System.Entity.SysBase.WebMessage;
+import DongYu.WebBase.System.Mapping.RowBounds;
 import DongYu.WebBase.System.Service.Exception.ServiceException;
 import DongYu.WebBase.System.Utils.ExcelReadUtils;
 import DongYu.WebBase.System.Utils.WebUtil;
@@ -299,4 +300,49 @@ public class OrderServiceImp implements OrderService {
         return mapping;
     }
 
+    /**
+     * 合并订单
+     * @return
+     */
+    public WebMessage mergeOrder(){
+        Orders condition=new Orders();
+        condition.setOrderStatus("待发货");
+        List<Orders> list=ordersMapper.findPage(condition,new RowBounds(0,Integer.MAX_VALUE)," Order By t.receiverPhone,t.productSpecific");
+        String code=UUID.randomUUID().toString();
+        Orders lastOrders=new Orders();
+        lastOrders.setReceiverPhone("");
+        lastOrders.setProductSpecific("");
+        for(Orders item:list){
+            if(lastOrders.getReceiverPhone().equals(item.getReceiverPhone()) &&
+                    lastOrders.getProductSpecific().equals(item.getProductSpecific())){
+                if(item.getUuid()==null || item.getUuid().equals("")){
+                    item.setUuid(code);
+                    ordersMapper.update(item);
+                }
+            }
+            else{
+                if(item.getUuid()==null || item.getUuid().equals("")){
+                    code=UUID.randomUUID().toString();;
+                    item.setUuid(code);
+                    ordersMapper.update(item);
+                }
+                else{
+                    code=item.getUuid();
+                }
+                lastOrders.setReceiverPhone(item.getReceiverPhone());
+                lastOrders.setProductSpecific(item.getProductSpecific());
+            }
+        }
+
+        WebMessage msg=new WebMessage();
+        msg.setSuccess(true);
+        msg.setMessage("保存成功...");
+        return msg;
+    }
+
+    public List<Orders> waitSendExport(Orders record){
+        record.setUuid("null");
+        record.setOrderStatus("待发货");
+       return ordersMapper.waitSendExport(record,new RowBounds(0,Integer.MAX_VALUE),null);
+    }
 }
