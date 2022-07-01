@@ -26,7 +26,6 @@ public class TestDemo {
 		Orders orders=new Orders();
 		orders.setUuid("null");
 		orders.setOrderStatus("待发货");
-		ordersMapper.waitSendExport(orders,new RowBounds(0,Integer.MAX_VALUE),null);
 
 //		Orders orders=new Orders();
 //		orders.setOrderTid("E20220602090003069200007");

@@ -26,6 +26,7 @@
 			{ text: '子单号Oid',  dataIndex: 'orderOid' ,width:'10%'},
 			{ text: '商品规格',  dataIndex: 'productSpecific' ,width:'10%'},
 			{ text: '商品数量',  dataIndex: 'sellerNumber' ,width:'10%'},
+			{ text: '虚拟单号',  dataIndex: 'uuid' ,width:'10%'},
 			{ text: '快递公司',  dataIndex: 'expressName' ,width:'10%'},
 			{ text: '快递单号',  dataIndex: 'trackingNum' ,width:'10%'},
 			{ text: '收件人手机号码',  dataIndex: 'receiverPhone' ,width:'10%'},
@@ -112,6 +113,11 @@
 					xtype: 'button',
 					name:'butWaitSendExport',
 					text: '待发货导出',
+					width: 60
+				},'-',{
+					xtype: 'button',
+					name:'butMergeOrder',
+					text: '合并订单',
 					width: 60
 				},'-',{
 					xtype: 'button',

@@ -93,13 +93,63 @@ public class OrderServiceImp implements OrderService {
             if(searchItem==null || searchItem.getId()==null){
                 item.setCreateTime(new Date());
                 item.setCreateUser(opUser);
+                item.setOrderStatus("待发货");
                 ordersMapper.insert(item);
             }
             else{
-                item.setId(searchItem.getId());
-                item.setModifyTime(new Date());
-                item.setModifyUser(opUser);
-                ordersMapper.update(item);
+                if(searchItem.getOrderStatus().equals("待发货")){
+                    item.setId(searchItem.getId());
+                    item.setModifyTime(new Date());
+                    item.setModifyUser(opUser);
+                    ordersMapper.update(item);
+                }
+            }
+        }
+
+        WebMessage msg=new WebMessage();
+        msg.setSuccess(true);
+        msg.setMessage("保存成功...");
+        return msg;
+    }
+
+    @Override
+    public WebMessage importOrdersTracking(InputStream excelFilein) throws ServiceException {
+        String opUser="";
+        try{
+            opUser=WebUtil.getCurrentUser().getUserName();
+        }
+        catch (Exception ex){
+            opUser="";
+        }
+
+        List<List<String>> sheet= ExcelReadUtils.readExcel(excelFilein);
+        if(sheet.size()<1){
+            throw new ServiceException("导入的是空文件.");
+        }
+        Map<Integer, String> mapping = setMapping(sheet.get(0));
+        if(mapping==null || mapping.size()<1){
+            throw new ServiceException("没有首列字段.");
+        }
+        List<Orders> ordersList=corverOrders(sheet,mapping);
+
+        for(Orders item : ordersList){
+            Orders searchItem=new Orders();
+            searchItem.setOrderTid(item.getOrderTid());
+            searchItem.setOrderOid(item.getOrderOid());
+            searchItem=ordersMapper.findOne(searchItem);
+            if(searchItem==null || searchItem.getId()==null){
+                item.setCreateTime(new Date());
+                item.setCreateUser(opUser);
+                item.setOrderStatus("待发货");
+                ordersMapper.insert(item);
+            }
+            else{
+                if(searchItem.getOrderStatus().equals("待发货")){
+                    item.setId(searchItem.getId());
+                    item.setModifyTime(new Date());
+                    item.setModifyUser(opUser);
+                    ordersMapper.update(item);
+                }
             }
         }
 
@@ -340,9 +390,31 @@ public class OrderServiceImp implements OrderService {
         return msg;
     }
 
+    /**
+     * 导出待发货
+     * @param record
+     * @return
+     */
     public List<Orders> waitSendExport(Orders record){
         record.setUuid("null");
         record.setOrderStatus("待发货");
-       return ordersMapper.waitSendExport(record,new RowBounds(0,Integer.MAX_VALUE),null);
+        List<Orders> list=ordersMapper.findPage(record,new RowBounds(0,Integer.MAX_VALUE)," Order By t.receiverPhone ASC,t.productSpecific ASC");
+        Map<String,Orders> map=new HashMap<String,Orders>();
+        for(Orders item:list){
+            if(item.getUuid()==null || item.getUuid().equals("")){
+                continue;
+            }
+            if(map.containsKey(item.getReceiverPhone()+"_"+item.getProductSpecific()+"_"+item.getUuid())){
+                Orders tempItem=map.get(item.getReceiverPhone()+"_"+item.getProductSpecific()+"_"+item.getUuid());
+                tempItem.setSellerComment(tempItem.getSellerComment()+" || "+item.getSellerComment());
+                tempItem.setBuyerComment(tempItem.getBuyerComment()+" || "+tempItem.getBuyerComment());
+                Double num=tempItem.getSellerNumber()+item.getSellerNumber();
+                tempItem.setSellerNumber(num);
+            }
+            else{
+                map.put(item.getReceiverPhone()+"_"+item.getProductSpecific()+"_"+item.getUuid(),item);
+            }
+        }
+        return  new ArrayList<Orders>(map.values());
     }
 }

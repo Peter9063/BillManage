@@ -780,22 +780,5 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		  	</if>
 		</where>
 	</sql>
-
-	<select id="waitSendExport" resultMap="Yao.EBusiness.Mapping.OrdersMapper.BaseMap">
-		SELECT
-		t.id,t.distributor,t.siteName,t.storeName,t.netName,t.orderTid,t.orderOid,t.expressName,t.trackingNum,t.receiverPhone,t.receiver,t.productNotes,t.receiverProvince,t.receiverCity,t.receiverTown,t.receiverAddres,t.receiverCardId,t.receiverCardName,t.siteSPU,t.siteSKU,t.productName,t.code69,t.productID,t.productPrice,t.productSpecific,t.spuShort,t.skuShort,t.sellerSPU,t.sellerSKU,sum(t.sellerNumber) as sellerNumber,t.sendStatus,t.salesReturnStatus,t.salesReturnAmount,t.buyerComment,t.productComment,t.sellerComment,t.sendDate,t.receiverFullAddres,t.supplier,t.isFowardZan,t.payId,t.outOrderId,t.orderTime,t.payTime,t.finishTime,t.postage,t.discount,t.payAmount,t.productAmount,t.orderStatus,t.orderType,t.buynick,t.buyphone,t.invoice,t.delivery,t.uuid,t.createUser,t.createTime,t.modifyUser,t.modifyTime
-		<![CDATA[
-		    FROM tab_orders t
-		]]>
-		<include refid="Yao.EBusiness.Mapping.OrdersMapper.findPageWhere"/>
-		GROUP BY t.uuid
-		<if test="orderBy != null" >${orderBy}</if>
-		<if test="orderBy == null" >
-			ORDER BY t.id DESC
-		</if>
-		<if test="(rowBounds != null) &amp;&amp; (rowBounds.limit != 2147483647)" >
-			LIMIT ${rowBounds.offset} ,${rowBounds.limit}
-		</if>
-	</select>
 </mapper>
 

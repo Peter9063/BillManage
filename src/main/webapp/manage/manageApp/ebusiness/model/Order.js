@@ -59,6 +59,7 @@ Ext.define('manageApp.ebusiness.model.Order',
         { name: 'buyphone', type: 'string' },//买家电话
         { name: 'invoice', type: 'string' },//发票信息
         { name: 'delivery', type: 'string' },//配送方式
+        { name: 'uuid', type: 'string' },//uuid
         { name: 'createTime', type: 'date'},//创建时间
         { name: 'createTimeBegin', type: 'date'},//
         { name: 'createTimeEnd', type: 'date'},//

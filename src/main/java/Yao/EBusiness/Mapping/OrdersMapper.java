@@ -47,7 +47,4 @@ public interface OrdersMapper {
 								@Param("rowBounds")DongYu.WebBase.System.Mapping.RowBounds rowBounds,
 								@Param("orderBy")String orderBy);
 
-	public List<Yao.EBusiness.Entity.Orders>  waitSendExport(@Param("record")Yao.EBusiness.Entity.Orders record,
-															 @Param("rowBounds")DongYu.WebBase.System.Mapping.RowBounds rowBounds,
-															 @Param("orderBy")String orderBy);
 }

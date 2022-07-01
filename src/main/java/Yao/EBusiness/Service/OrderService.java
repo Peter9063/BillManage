@@ -23,8 +23,9 @@ public interface OrderService {
 
     public WebMessage inputOrders(InputStream excelFilein) throws ServiceException;
 
+    public WebMessage importOrdersTracking(InputStream excelFilein) throws ServiceException;
+
     public WebMessage mergeOrder();
 
     public List<Orders> waitSendExport(Orders record);
-
 }

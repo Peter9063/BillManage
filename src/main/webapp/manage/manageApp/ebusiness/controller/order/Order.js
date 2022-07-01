@@ -9,6 +9,7 @@
 	alias4Grid:'grid[name=grid] ',
 	init: function(application){
 		var regViewEvent={};
+		regViewEvent[this.alias4Views+'grid button[name=butMergeOrder]']={click: this.mergeOrderClick};
 		regViewEvent[this.alias4Views+'grid button[name=butInput]']={click: this.inputClick};
 		regViewEvent[this.alias4Views+'grid button[name=butExport]']={click: this.exportClick};
 		regViewEvent[this.alias4Views+'grid button[name=butWaitSendExport]']={click: this.waitSendExportClick};
@@ -21,6 +22,7 @@
 		regViewEvent['forumViewBillFormWin button[name=btnWinFormSave]']={click:this.winFromSave};
 		regViewEvent['forumViewBillFormWin button[name=btnWinFormModif]']={click:this.winFormModif};
 		regViewEvent['OrderInputWin button[name=btnUpLoadSave]']={click:this.uploadOrders};
+		regViewEvent['OrderInputTrackingWin button[name=btnUpLoadSave]']={click:this.uploadOrdersTracking};
 
 
 
@@ -123,19 +125,35 @@
 		var conditions=manageApp.utils.Form.getCommitParam(searchBar.getForm());
 		conditions=Ext.Object.toQueryString(conditions);
 		console.log(conditions);
-		window.open('../ebusiness/order/exportOrders.do?'+conditions);
+		window.open('../ebusiness/order/waitSendExport.do?'+conditions);
 
 	},
 	sendedInputClick:function(obj, event, eOpts){
 		console.log('sendedInputClick');
-		// var me=this;
-		// var view=obj.up(this.alias4Views);
-		//
-		// this.formWin=Ext.create('manageApp.ebusiness.view.order.OrderInputWin',{
-		// 	width: 400,
-		// 	title:'导入订单',
-		// 	parentView:view
-		// });
+		var me=this;
+		var view=obj.up(this.alias4Views);
+
+		this.formWin=Ext.create('manageApp.ebusiness.view.order.OrderInputTrackingWin',{
+			width: 400,
+			title:'导入运单',
+			parentView:view
+		});
+	},
+	mergeOrderClick:function(obj, event, eOpts){
+		console.log('mergeOrderClick');
+		var me=this;
+		manageApp.utils.Ajax.request2(
+		"../ebusiness/order/mergeOrder",
+		'POST',
+		{},//字符串
+		function (options, success, response) {
+			var message = JSON.parse(response.responseText)
+			if (message.success) {
+				Ext.Msg.alert('Success', message.message);
+			} else {
+				Ext.Msg.alert('Error', message.message);
+			}
+		});
 	},
 	inputClick:function(obj, event, eOpts){
 		console.log('inputClick');
@@ -366,6 +384,27 @@
 		},gridStore);
 
 	},
+	uploadOrdersTracking:function(obj){
+		console.log('uploadOrders');
+		var win=obj.up('window');
+		var form = obj.up('form');
+		if(form.getForm().isValid()){
+			form.getForm().submit({
+				url: '..//ebusiness/order/importOrdersTracking.do',
+				waitMsg: '上传文件中...',
+				success: function(form, action) {
+					Ext.Msg.alert('success', action.result.message);
+					win.parentView.mainStore.load();
+					win.close();
+				},
+				failure: function(form, action){
+					console.log(action)
+					console.log(action.result)
+					Ext.Msg.alert('Error', action.result.message);
+				}
+			});
+		}
+	},
 	uploadOrders:function(obj){
 		console.log('uploadOrders');
 		var win=obj.up('window');
@@ -386,5 +425,5 @@
 				}
 			});
 		}
-	},
+	}
 });
