@@ -516,6 +516,36 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
  		]]>
 	</update>
 
+	<update id="updateOrdersTracking" parameterType="Yao.EBusiness.Entity.Orders">
+		UPDATE tab_orders
+		<set >
+			<if test="expressName != null" >
+				<![CDATA[
+	              expressName =#{expressName,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="trackingNum != null" >
+				<![CDATA[
+	              trackingNum =#{trackingNum,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="modifyUser != null" >
+				<![CDATA[
+	              modifyUser =#{modifyUser,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="modifyTime != null" >
+				<![CDATA[
+	              modifyTime =#{modifyTime,jdbcType=TIMESTAMP}
+             ]]>
+			</if>
+		</set>
+		<![CDATA[
+        WHERE
+        	uuid = #{uuid}
+ 		]]>
+	</update>
+
     <!--传入id, 测试是否支持主键非id  -->
     <delete id="deleteById" parameterType="Yao.EBusiness.Entity.Orders">
     <![CDATA[

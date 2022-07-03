@@ -28,6 +28,8 @@ public interface OrdersMapper {
 	 * 修改一个Orders实体
 	 */
 	public void update(Yao.EBusiness.Entity.Orders record);
+
+	public void updateOrdersTracking(Yao.EBusiness.Entity.Orders record);
 	/**
 	 * 按主键删除一个Orders实体
 	 */

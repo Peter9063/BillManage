@@ -133,23 +133,13 @@ public class OrderServiceImp implements OrderService {
         List<Orders> ordersList=corverOrders(sheet,mapping);
 
         for(Orders item : ordersList){
-            Orders searchItem=new Orders();
-            searchItem.setOrderTid(item.getOrderTid());
-            searchItem.setOrderOid(item.getOrderOid());
-            searchItem=ordersMapper.findOne(searchItem);
-            if(searchItem==null || searchItem.getId()==null){
-                item.setCreateTime(new Date());
-                item.setCreateUser(opUser);
-                item.setOrderStatus("待发货");
-                ordersMapper.insert(item);
-            }
-            else{
-                if(searchItem.getOrderStatus().equals("待发货")){
-                    item.setId(searchItem.getId());
-                    item.setModifyTime(new Date());
-                    item.setModifyUser(opUser);
-                    ordersMapper.update(item);
-                }
+            if(item.getUuid()!=null && !item.getUuid().equals("") &&
+                    item.getUuid()!=null && !item.getUuid().equals("") &&
+                    item.getExpressName()!=null && !item.getExpressName().equals("") &&
+                    item.getTrackingNum()!=null && !item.getTrackingNum().equals("")){
+                item.setModifyUser(opUser);
+                item.setModifyTime(new Date());
+                ordersMapper.updateOrdersTracking(item);
             }
         }
 
@@ -345,6 +335,9 @@ public class OrderServiceImp implements OrderService {
             }
             if(headCol.get(i)!=null && headCol.get(i).equals("配送方式")){
                 mapping.put(i,"delivery");
+            }
+            if(headCol.get(i)!=null && headCol.get(i).equals("虚拟单号")){
+                mapping.put(i,"uuid");
             }
         }
         return mapping;
