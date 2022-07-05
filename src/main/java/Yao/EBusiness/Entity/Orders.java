@@ -248,6 +248,18 @@ public class Orders {
      */
     private String uuid;
     /**
+     * 订单生命周期
+     */
+    private Integer orderLife;
+    /**
+     * 批号
+     */
+    private String batchID;
+    /**
+     * 统计数量
+     */
+    private Double sumNum;
+    /**
      *
      */
 	private String createUser;
@@ -1202,6 +1214,30 @@ public class Orders {
 
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    public Integer getOrderLife() {
+        return orderLife;
+    }
+
+    public void setOrderLife(Integer orderLife) {
+        this.orderLife = orderLife;
+    }
+
+    public String getBatchID() {
+        return batchID;
+    }
+
+    public void setBatchID(String batchID) {
+        this.batchID = batchID;
+    }
+
+    public Double getSumNum() {
+        return sumNum;
+    }
+
+    public void setSumNum(Double sumNum) {
+        this.sumNum = sumNum;
     }
 
 }
