@@ -62,6 +62,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         <result column="invoice" property="invoice" jdbcType="VARCHAR"/>
         <result column="delivery" property="delivery" jdbcType="VARCHAR"/>
 		<result column="uuid" property="uuid" jdbcType="VARCHAR"/>
+		<result column="orderLife" property="orderLife" jdbcType="INTEGER"/>
+		<result column="batchID" property="batchID" jdbcType="VARCHAR"/>
+		<result column="sumNum" property="sumNum" jdbcType="DECIMAL"/>
         <result column="createUser" property="createUser" jdbcType="VARCHAR"/>
         <result column="createTime" property="createTime" jdbcType="TIMESTAMP"/>
         <result column="modifyUser" property="modifyUser" jdbcType="VARCHAR"/>
@@ -71,7 +74,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 	<!-- 用于select查询公用抽取的列 -->
 	<sql id="columns">
 	    <![CDATA[
-		t.id,t.distributor,t.siteName,t.storeName,t.netName,t.orderTid,t.orderOid,t.expressName,t.trackingNum,t.receiverPhone,t.receiver,t.productNotes,t.receiverProvince,t.receiverCity,t.receiverTown,t.receiverAddres,t.receiverCardId,t.receiverCardName,t.siteSPU,t.siteSKU,t.productName,t.code69,t.productID,t.productPrice,t.productSpecific,t.spuShort,t.skuShort,t.sellerSPU,t.sellerSKU,t.sellerNumber,t.sendStatus,t.salesReturnStatus,t.salesReturnAmount,t.buyerComment,t.productComment,t.sellerComment,t.sendDate,t.receiverFullAddres,t.supplier,t.isFowardZan,t.payId,t.outOrderId,t.orderTime,t.payTime,t.finishTime,t.postage,t.discount,t.payAmount,t.productAmount,t.orderStatus,t.orderType,t.buynick,t.buyphone,t.invoice,t.delivery,t.uuid,t.createUser,t.createTime,t.modifyUser,t.modifyTime
+		t.id,t.distributor,t.siteName,t.storeName,t.netName,t.orderTid,t.orderOid,t.expressName,t.trackingNum,t.receiverPhone,t.receiver,t.productNotes,t.receiverProvince,t.receiverCity,t.receiverTown,t.receiverAddres,t.receiverCardId,t.receiverCardName,t.siteSPU,t.siteSKU,t.productName,t.code69,t.productID,t.productPrice,t.productSpecific,t.spuShort,t.skuShort,t.sellerSPU,t.sellerSKU,t.sellerNumber,t.sendStatus,t.salesReturnStatus,t.salesReturnAmount,t.buyerComment,t.productComment,t.sellerComment,t.sendDate,t.receiverFullAddres,t.supplier,t.isFowardZan,t.payId,t.outOrderId,t.orderTime,t.payTime,t.finishTime,t.postage,t.discount,t.payAmount,t.productAmount,t.orderStatus,t.orderType,t.buynick,t.buyphone,t.invoice,t.delivery,t.uuid,t.orderLife,t.batchID,t.sumNum,t.createUser,t.createTime,t.modifyUser,t.modifyTime
 	    ]]>
 	</sql>
 
@@ -135,6 +138,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         	invoice,
         	delivery,
             uuid,
+			orderLife,
+			batchID,
+			sumNum,
         	createUser,
         	createTime,
         	modifyUser,
@@ -196,6 +202,9 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
         	#{invoice,jdbcType=VARCHAR},
         	#{delivery,jdbcType=VARCHAR},
 		    #{uuid,jdbcType=VARCHAR},
+		  	#{orderLife,jdbcType=INTEGER},
+		  	#{batchID,jdbcType=VARCHAR},
+		  	#{sumNum,jdbcType=DECIMAL},
         	#{createUser,jdbcType=VARCHAR},
         	#{createTime,jdbcType=TIMESTAMP},
         	#{modifyUser,jdbcType=VARCHAR},
@@ -488,6 +497,21 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 				<![CDATA[
 	              uuid =#{uuid,jdbcType=VARCHAR},
              ]]>
+			</if>
+			<if test="orderLife != null" >
+				<![CDATA[
+	              orderLife =#{orderLife,jdbcType=INTEGER},
+             ]]>
+			</if>
+			<if test="batchID != null" >
+				<![CDATA[
+	              batchID =#{batchID,jdbcType=VARCHAR},
+             ]]>
+			</if>
+			<if test="sumNum != null" >
+				<![CDATA[
+	              sumNum =#{sumNum,jdbcType=DECIMAL},
+             	]]>
 			</if>
 			<if test="createUser != null" >
 				<![CDATA[
@@ -784,6 +808,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="record.delivery!= null" >
 		  		AND t.delivery=#{record.delivery,jdbcType=VARCHAR}
 		  	</if>
+			<if test="record.orderLife!= null" >
+				AND t.orderLife=#{record.orderLife,jdbcType=INTEGER}
+			</if>
+			<if test="record.batchID!= null" >
+				AND t.batchID=#{record.batchID,jdbcType=VARCHAR}
+			</if>
 			<if test="record.createUser!= null" >
 		  		AND t.createUser=#{record.createUser,jdbcType=VARCHAR}
 		  	</if>
