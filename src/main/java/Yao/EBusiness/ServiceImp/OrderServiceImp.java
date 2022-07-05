@@ -139,6 +139,7 @@ public class OrderServiceImp implements OrderService {
                     item.getTrackingNum()!=null && !item.getTrackingNum().equals("")){
                 item.setModifyUser(opUser);
                 item.setModifyTime(new Date());
+                item.setOrderStatus("已发货");
                 ordersMapper.updateOrdersTracking(item);
             }
         }
@@ -354,10 +355,12 @@ public class OrderServiceImp implements OrderService {
         String code=UUID.randomUUID().toString();
         Orders lastOrders=new Orders();
         lastOrders.setReceiverPhone("");
-        lastOrders.setProductSpecific("");
+        lastOrders.setReceiver("");
+        lastOrders.setReceiverFullAddres("");
         for(Orders item:list){
             if(lastOrders.getReceiverPhone().equals(item.getReceiverPhone()) &&
-                    lastOrders.getProductSpecific().equals(item.getProductSpecific())){
+                    lastOrders.getReceiver().equals(item.getReceiver()) &&
+                    lastOrders.getReceiverFullAddres().equals(item.getReceiverFullAddres())){
                 if(item.getUuid()==null || item.getUuid().equals("")){
                     item.setUuid(code);
                     ordersMapper.update(item);
@@ -373,7 +376,8 @@ public class OrderServiceImp implements OrderService {
                     code=item.getUuid();
                 }
                 lastOrders.setReceiverPhone(item.getReceiverPhone());
-                lastOrders.setProductSpecific(item.getProductSpecific());
+                lastOrders.setReceiver(item.getReceiver());
+                lastOrders.setReceiverFullAddres(item.getReceiverFullAddres());
             }
         }
 
@@ -397,15 +401,17 @@ public class OrderServiceImp implements OrderService {
             if(item.getUuid()==null || item.getUuid().equals("")){
                 continue;
             }
-            if(map.containsKey(item.getReceiverPhone()+"_"+item.getProductSpecific()+"_"+item.getUuid())){
-                Orders tempItem=map.get(item.getReceiverPhone()+"_"+item.getProductSpecific()+"_"+item.getUuid());
+            if(map.containsKey(item.getUuid())){
+                Orders tempItem=map.get(item.getUuid());
+                tempItem.setProductSpecific(tempItem.getProductSpecific()+" "+ item.getProductSpecific()+" * "+item.getSellerNumber()+"; ");
                 tempItem.setSellerComment(tempItem.getSellerComment()+" || "+item.getSellerComment());
                 tempItem.setBuyerComment(tempItem.getBuyerComment()+" || "+tempItem.getBuyerComment());
-                Double num=tempItem.getSellerNumber()+item.getSellerNumber();
-                tempItem.setSellerNumber(num);
+//                Double num=tempItem.getSellerNumber()+item.getSellerNumber();
+//                tempItem.setSellerNumber(num);
             }
             else{
-                map.put(item.getReceiverPhone()+"_"+item.getProductSpecific()+"_"+item.getUuid(),item);
+                map.put(item.getUuid(),item);
+                item.setProductSpecific(item.getProductSpecific()+" * "+item.getSellerNumber()+"; ");
             }
         }
         return  new ArrayList<Orders>(map.values());

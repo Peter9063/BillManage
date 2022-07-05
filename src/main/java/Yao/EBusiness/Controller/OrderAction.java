@@ -106,7 +106,7 @@ public class OrderAction {
             throw new ServiceException("文件格式不正确");
         }
         InputStream ordersFile = multipartFile.getInputStream();
-        WebMessage webMessage=orderService.inputOrders(ordersFile);
+        WebMessage webMessage=orderService.importOrdersTracking(ordersFile);
         return webMessage;
     }
 
@@ -175,10 +175,10 @@ public class OrderAction {
         headList.add("买家电话");
         headList.add("发票信息");
         headList.add("配送方式");
-        headList.add("创建时间");
-        headList.add("创建人");
-        headList.add("修改时间");
-        headList.add("修改人");
+//        headList.add("创建时间");
+//        headList.add("创建人");
+//        headList.add("修改时间");
+//        headList.add("修改人");
         excelList.add(headList);
 
         for (Orders item : searchList) {
@@ -269,8 +269,8 @@ public class OrderAction {
         headList.add("收件人城市");
         headList.add("收件人区/镇");
         headList.add("收件人具体地址");
-        headList.add("商品规格");
-        headList.add("商品数量");
+        headList.add("商品规格/数量");
+//        headList.add("商品数量");
         headList.add("商品备注(选填)");
         headList.add("卖家备注");
         headList.add("买家留言");
@@ -288,7 +288,7 @@ public class OrderAction {
             bodyList.add(item.getReceiverTown()==null?"":item.getReceiverTown());
             bodyList.add(item.getReceiverAddres()==null?"":item.getReceiverAddres());
             bodyList.add(item.getProductSpecific()==null?"":item.getProductSpecific());
-            bodyList.add(item.getSellerNumber()==null?"":String.format("%.4f",item.getSellerNumber()));
+//            bodyList.add(item.getSellerNumber()==null?"":String.format("%.4f",item.getSellerNumber()));
             bodyList.add(item.getProductNotes()==null?"":item.getProductNotes());
             bodyList.add(item.getSellerComment()==null?"":item.getSellerComment());
             bodyList.add(item.getBuyerComment()==null?"":item.getBuyerComment());

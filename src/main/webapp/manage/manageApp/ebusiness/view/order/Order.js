@@ -176,6 +176,11 @@
 					padding:'5 5 5 5'
 				},
 				{
+					fieldLabel: '虚拟单号',
+					name: 'uuid',
+					padding:'5 5 5 5'
+				},
+				{
 					fieldLabel: '订单状态',
 					name: 'orderStatus',
 					padding:'5 5 5 5'
