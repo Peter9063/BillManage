@@ -23,6 +23,13 @@ Ext.define('manageApp.ebusiness.view.order.OrderInputWin', {
 			},
 
 			items: [
+				{
+					xtype: 'textfield',
+					fieldLabel : '导入批号',
+					name : 'batchId',
+					allowBlank: false,
+					value:Ext.Date.format(new Date(),'Y-m-d')
+				},
 				// {
 				//     xtype: 'textfield',
 				//     name: 'fileName',

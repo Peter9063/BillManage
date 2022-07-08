@@ -23,6 +23,16 @@
 		regViewEvent['forumViewBillFormWin button[name=btnWinFormModif]']={click:this.winFormModif};
 		regViewEvent['OrderInputWin button[name=btnUpLoadSave]']={click:this.uploadOrders};
 		regViewEvent['OrderInputTrackingWin button[name=btnUpLoadSave]']={click:this.uploadOrdersTracking};
+		regViewEvent[this.alias4Views + 'grid[name=grid]'] = {
+			// cellclick: this.gridCellClick,
+			cellcontextmenu: this.gridCellcontextmenu,
+			edit: function (editor, e) {
+				console.log("edit");
+				console.log(editor);
+				console.log(e);
+				e.grid.getView().refresh();
+			}
+		};//itemclick: this.itemclick
 
 
 
@@ -35,7 +45,60 @@
 	onLaunch:function(application){
 
 	},
+	gridCellcontextmenu: function (ctr, td, cellIndex, record, tr, rowIndex, e, eOpts) {
+		console.log("gridCellcontextmenu");
+		var me = this;
 
+		e.preventDefault();
+		if (rowIndex < 0) {
+			return;
+		}
+		console.log("2")
+		var colum = ctr.up().columns[cellIndex - 1];
+		if (colum.dataIndex.indexOf('sumNum') >= 0) {
+
+			var menu = Ext.create('Ext.menu.Menu', {
+				width: 200,
+				items: [
+					{
+						xtype: 'textfield',
+						name: 'txMinNum',
+						emptyText: '输入数量'
+					},
+					{
+						text: '更新',
+						handler: function (item, e) {
+							if (menu.down('textfield[name=txMinNum]').getValue() != '') {
+								var selectedRows = ctr.getSelectionModel().getSelection();
+								for (var i = 0; i < selectedRows.length; i++) {
+									selectedRows[i].set('sumNum', menu.down('textfield[name=txMinNum]').getValue());
+									// var txMaxNum = menu.down('textfield[name=txMaxNum]').getValue();
+									// if (txMaxNum != null) {
+									// 	selectedRows[i].set('maxQty', txMaxNum);
+									// }
+									// var txNote = menu.down('textfield[name=txNote]').getValue();
+									// if (txNote != null) {
+									// 	selectedRows[i].set('note', txNote);
+									// }
+								}
+								var gridStore=ctr.getStore();
+								me.syncGridDate({
+									success:function(batch, eOpts){
+										Ext.Msg.alert('Status','保存成功.');
+									},
+									failure:function(batch, eOpts){
+										Ext.Msg.alert('Status', '保存失败.');
+									},
+									scope:this
+								},gridStore);
+							}
+						}
+					}
+				]
+			});
+			menu.showAt(e.getXY());
+		}
+	},
 	initAllot:function(obj,record,title,view,grid,url){
 		manageApp.utils.Ajax.request2(
 			url||"../forum/confFlowInstance/initAllot",//初始化配置信息

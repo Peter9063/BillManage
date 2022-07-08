@@ -5,9 +5,16 @@ Ext.define('manageApp.utils.Model', {
 		constantName_WeekNumber:'WeekNumber',
      	/**
      	 * 系统常量表
-     	 * @type 
+     	 * @type
      	 */
      	constants:{
+			'OrderLife':{
+				'1':'云帆导入',
+				'2':'合并订单',
+				'3':'虚拟单导出',
+				'4':'运单导入',
+				'5':'导出运单号的运帆订单'
+			},
      		'menuType':{
      		'1':'菜单',
 			'2':'按钮'
@@ -91,11 +98,11 @@ Ext.define('manageApp.utils.Model', {
      			'0':'未执行',
      			'1':'未通过',
      			'2':'通过'
-     		},     		
+     		},
      		'BillStatus':{
      			'OPEN':'打开',
      			'CLOSED':'关闭'
-     		},     		
+     		},
      		'BussType':{
      			'in_wo_':'工单入库',
      			'in_po_':'采购入库',
@@ -189,6 +196,24 @@ Ext.define('manageApp.utils.Model', {
 				"直传":"1、2、3、4、5、6、7、8、9、10、11、12、13、14、15、16、17、18、19、20、21、22、23、24、25、26、27、28、29、30、31"
 			}
      	},
+		 convertOrderLifeValue:function(value){
+			 if(value==1){
+				 return '云帆导入';
+			 }
+			 if(value==2){
+				 return '合并订单';
+			 }
+			 if(value==3){
+				 return '虚拟单导出';
+			 }
+			 if(value==4){
+				 return '运单导入';
+			 }
+			 if(value==5){
+				 return '导出运单号的运帆订单';
+			 }
+			 return '<font color="red">未知值</font>';
+		 },
     	convertDiffStateValue:function(value){
     		if(value==0){
     			return '<font>未计算</font>';
@@ -323,21 +348,21 @@ Ext.define('manageApp.utils.Model', {
     	},
     	convertTestItemValue:function(value){
     		var returnValue=manageApp.utils.Model.constants[manageApp.utils.Model.constantName_TestItem][value];
-    		if(returnValue!=null && 
-    		   returnValue!='' && 
+    		if(returnValue!=null &&
+    		   returnValue!='' &&
     		   typeof(reValue) == "undefined"){
     		   	return returnValue;
     		}
-    		return '<font color="red">未知值</font>';			
+    		return '<font color="red">未知值</font>';
     	},
     	convertUserRole:function(value){
     		var returnValue=manageApp.utils.Model.constants[manageApp.utils.Model.constantName_UserRole][value];
-    		if(returnValue!=null && 
-    		   returnValue!='' && 
+    		if(returnValue!=null &&
+    		   returnValue!='' &&
     		   typeof(reValue) == "undefined"){
     		   	return returnValue;
     		}
-    		return '<font color="red">未知值</font>';			
+    		return '<font color="red">未知值</font>';
     	},
 		 convertMenuTypeValue:function(value){
 			 var returnValue=manageApp.utils.Model.constants['menuType'][value];
@@ -424,7 +449,7 @@ Ext.define('manageApp.utils.Model', {
 							text : '接收电流',
 							renderer : manageApp.utils.Model.convertResultValue
 						});// 接收电流 0:保留 1:通过 2:未通过 11:正常 12:异常
-    			
+
     			columns.push({ dataIndex: 'rxCurrent', text: '接收电流值(mA)' });//txCurrent
 				columns.push({
 							dataIndex : 'outNullMagnet',
@@ -445,12 +470,12 @@ Ext.define('manageApp.utils.Model', {
 							dataIndex : 'portL',
 							text : '端口低测试',
 							renderer : manageApp.utils.Model.convertResultValue
-						});//端口低测试 0:保留 1:通过 2:未通过 11:正常 12:异常 
+						});//端口低测试 0:保留 1:通过 2:未通过 11:正常 12:异常
 				columns.push({
 							dataIndex : 'lowElec',
 							text : '电压测试',
 							renderer : manageApp.utils.Model.convertResultValue
-						});//低电压测试 0:保留 1:通过 2:未通过 11:正常 12:异常 
+						});//低电压测试 0:保留 1:通过 2:未通过 11:正常 12:异常
 				columns.push({ dataIndex: 'normalVoltage', text: '电压值(V)' });//正常电压
     		}
      		if(testItem=='2'){//'2':'读版本频偏',
@@ -460,9 +485,9 @@ Ext.define('manageApp.utils.Model', {
 						renderer : manageApp.utils.Model.convertResultValue
 					});// eeprom 0:保留 1:通过 2:未通过 11:正常 12:异常
      			columns.push({ dataIndex: 'frequencyOffset', text: '频偏' });//频偏
-	         	columns.push({ dataIndex: 'softVer', text: '软件版本  ' });//软件版本   
-    			columns.push({ dataIndex: 'hardVer', text: '硬件版本  ' });//硬件版本  
-    		}   		
+	         	columns.push({ dataIndex: 'softVer', text: '软件版本  ' });//软件版本
+    			columns.push({ dataIndex: 'hardVer', text: '硬件版本  ' });//硬件版本
+    		}
       		if(testItem=='3'){//'3':'整机功耗',
 		         columns.push({
 						dataIndex : 'commTest',
@@ -476,17 +501,17 @@ Ext.define('manageApp.utils.Model', {
 						renderer : manageApp.utils.Model.convertResultValue
 					});// eeprom 0:保留 1:通过 2:未通过 11:正常 12:异常
 
-    		}     			
+    		}
       		if(testItem=='4'){//'4':'终端参数初始化',
 		         columns.push({
 						dataIndex : 'commTest',
 						text : '通讯',
 						renderer : manageApp.utils.Model.convertResultValue
 					});// eeprom 0:保留 1:通过 2:未通过 11:正常 12:异常
-//	         	columns.push({ dataIndex: 'softVer', text: '软件版本  ' });//软件版本   
-//    			columns.push({ dataIndex: 'hardVer', text: '硬件版本  ' });//硬件版本 
+//	         	columns.push({ dataIndex: 'softVer', text: '软件版本  ' });//软件版本
+//    			columns.push({ dataIndex: 'hardVer', text: '硬件版本  ' });//硬件版本
     			columns.push({ dataIndex: 'initParam', text: '初始化参数  ' });//初始化参数
-    		}	
+    		}
       		if(testItem=='5'){//'5':'计数准确性测试',
 		         columns.push({
 						dataIndex : 'commTest',
@@ -501,10 +526,10 @@ Ext.define('manageApp.utils.Model', {
 						       renderer :function(value,metaData,record){
 						    	   if(record!=null){
 						    		   return record.get('reading')-record.get('eleReading')
-						    	   }					        		
+						    	   }
 					           }
 		        	         });//机电误差
-    		}	
+    		}
   			if(testItem=='6'){//'6':'信号强度测试',
 		         columns.push({
 						dataIndex : 'commTest',
@@ -513,7 +538,7 @@ Ext.define('manageApp.utils.Model', {
 					});// eeprom 0:保留 1:通过 2:未通过 11:正常 12:异常
     			columns.push({ dataIndex: 'rssi1', text: '信号强度1' });//信号强度1
        			columns.push({ dataIndex: 'rssi2', text: '信号强度2' });//信号强度2
-    		}	
+    		}
   			if(testItem=='7'){//'7':'终端时钟',
 		         columns.push({
 						dataIndex : 'commTest',
@@ -521,7 +546,7 @@ Ext.define('manageApp.utils.Model', {
 						renderer : manageApp.utils.Model.convertResultValue
 					});// eeprom 0:保留 1:通过 2:未通过 11:正常 12:异常
     			columns.push({ dataIndex: 'moduleTime', text: '终端时间',xtype: 'datecolumn',format:'Y-m-d h:i:s' });//终端时间
-    		}	
+    		}
   			if(testItem=='8'){//'8':'自动校频功能测试',
 		         columns.push({
 						dataIndex : 'commTest',
@@ -529,7 +554,7 @@ Ext.define('manageApp.utils.Model', {
 						renderer : manageApp.utils.Model.convertResultValue
 					});// eeprom 0:保留 1:通过 2:未通过 11:正常 12:异常
 		        columns.push({ dataIndex: 'frequencyOffsetCheck', text: '校频后频偏值' });//校频后频偏值
-    		}	
+    		}
    			if(testItem=='9'){//'9':'成品计数准确性测试'
 		         columns.push({
 						dataIndex : 'commTest',
@@ -544,13 +569,13 @@ Ext.define('manageApp.utils.Model', {
 						       renderer :function(value,metaData,record){
 						    	   if(record!=null){
 						    		   return record.get('reading')-record.get('eleReading')
-						    	   }					        		
+						    	   }
 					           }
 		        	         });//机电误差
-    			
+
     		}
    			if(testItem=='10'){//'10':'维修'
-    			
+
     		}
    			if(testItem=='11'){//'11':'电感值测试'
    				columns.push({ dataIndex: 'l1', text: '电感L1' });//电感L1
@@ -569,7 +594,7 @@ Ext.define('manageApp.utils.Model', {
 						       renderer :function(value,metaData,record){
 						    	   if(record!=null){
 						    		   return record.get('reading')-record.get('eleReading')
-						    	   }					        		
+						    	   }
 					           }
 		        	         });//机电误差
 		        columns.push({ dataIndex: 'synState',  text: '同步状态' , renderer : manageApp.utils.Model.convertSyncStateValue });//同步状态
@@ -580,7 +605,7 @@ Ext.define('manageApp.utils.Model', {
    				columns.push({ dataIndex: 'portL', text: '端口低' });//端口低
    				columns.push({ dataIndex: 'normalVoltage', text: '采样电压' });//采样电压
    				columns.push({ dataIndex: 'simId', text: '卡号' });//卡号
-   				columns.push({ dataIndex: 'reedState', 
+   				columns.push({ dataIndex: 'reedState',
    										text: '干簧管状态' ,
    										renderer : manageApp.utils.Model.convertResultValue});//干簧管状态
    				columns.push({ dataIndex: 'txCurrent', text: '静态电流' });//静态电流
@@ -599,7 +624,7 @@ Ext.define('manageApp.utils.Model', {
 				       renderer :function(value,metaData,record){
 				    	   if(record!=null){
 				    		   return record.get('reading')-record.get('eleReading')
-				    	   }					        		
+				    	   }
 			           }
      	         });//机电误差
     		}
@@ -618,7 +643,7 @@ Ext.define('manageApp.utils.Model', {
 				       renderer :function(value,metaData,record){
 				    	   if(record!=null){
 				    		   return record.get('reading')-record.get('eleReading');
-				    	   }					        		
+				    	   }
 			           }
      	         });//机电误差
     		}
@@ -637,7 +662,7 @@ Ext.define('manageApp.utils.Model', {
    				});//卡号
    				columns.push({ dataIndex: 'initParam', text: '初始化参数' });//初始化参数
 	         	columns.push({ dataIndex: 'softVer', text: '软件版本' });//软件版本
-    			columns.push({ dataIndex: 'hardVer', text: '硬件版本' });//硬件版本 
+    			columns.push({ dataIndex: 'hardVer', text: '硬件版本' });//硬件版本
     		}
    			if(testItem=='23'){//'23':'NBIOT-装箱'
    				columns.push({ dataIndex: 'itf25', text: 'ITF25' });//ITF25
@@ -652,24 +677,24 @@ Ext.define('manageApp.utils.Model', {
     		}
    			if(testItem=='24'){//'24':'NBIOT-PCB_a功能项目(阀控 )'
    				columns.push({ dataIndex: 'eeprom', text: 'eeprom' });//eeprom
-   				columns.push({ dataIndex: 'buzzer', 
+   				columns.push({ dataIndex: 'buzzer',
    										text: '蜂鸣器',
    										renderer : manageApp.utils.Model.convertResultValue});//蜂鸣器
-   				columns.push({ dataIndex: 'valveControl', 
+   				columns.push({ dataIndex: 'valveControl',
    										 text: '阀控状态',
    										renderer : manageApp.utils.Model.convertResultValue});//阀控状态
    				columns.push({ dataIndex: 'normalVoltage', text: '采样电压' });//采样电压
    				columns.push({ dataIndex: 'simId', text: '卡号' });//卡号
-   				columns.push({ dataIndex: 'reedState', 
+   				columns.push({ dataIndex: 'reedState',
    										text: '干簧管状态',
    										renderer : manageApp.utils.Model.convertResultValue});//干簧管状态
    				columns.push({ dataIndex: 'txCurrent', text: '静态电流' });//静态电流
     		}
    			if(testItem=='25'){//'25':'NBIOT-PCB_a功能项目(阀控 )'
-   				columns.push({ dataIndex: 'openValve', 
+   				columns.push({ dataIndex: 'openValve',
    										 text: '开阀状态' ,
    										renderer : manageApp.utils.Model.convertResultValue});//开阀状态
-   				columns.push({ dataIndex: 'closeValve', 
+   				columns.push({ dataIndex: 'closeValve',
    										text: '关阀状态',
    										renderer : manageApp.utils.Model.convertResultValue});//关阀状态
     		}
@@ -684,7 +709,7 @@ Ext.define('manageApp.utils.Model', {
 				       renderer :function(value,metaData,record){
 				    	   if(record!=null){
 				    		   return record.get('reading')-record.get('eleReading');
-				    	   }					        		
+				    	   }
 			           }
      	         });//机电误差
 		        columns.push({ dataIndex: 'normalVoltage', text: '电压值(V)' });//正常电压
@@ -717,6 +742,6 @@ Ext.define('manageApp.utils.Model', {
 				return ""
 			 }
 		 }
-    	
+
      }
 });

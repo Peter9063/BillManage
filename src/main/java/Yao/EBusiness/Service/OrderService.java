@@ -21,11 +21,13 @@ public interface OrderService {
 
     public WebMessage findPage(Orders record, Integer start, Integer limit, Sorte[] sorts);
 
-    public WebMessage inputOrders(InputStream excelFilein) throws ServiceException;
+    public WebMessage inputOrders(InputStream excelFilein,String batchId) throws ServiceException;
 
     public WebMessage importOrdersTracking(InputStream excelFilein) throws ServiceException;
 
     public WebMessage mergeOrder();
 
     public List<Orders> waitSendExport(Orders record);
+
+    public WebMessage exportOrders(Orders record, Integer start, Integer limit, Sorte[] sorts);
 }

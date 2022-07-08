@@ -24,12 +24,27 @@ public class OrderServiceImp implements OrderService {
     @Autowired
     OrdersMapper ordersMapper;
 
+
     @Override
     public WebMessage<Orders> save(Orders[] records) {
         for (Orders item:records){
-            ordersMapper.insert(item);
+            if(item.getId()==null ||item.getId().equals(0)){
+                Orders searchItem=new Orders();
+                searchItem.setOrderTid(item.getOrderTid());
+                searchItem.setOrderOid(item.getOrderOid());
+                searchItem=ordersMapper.findOne(searchItem);
+                if(searchItem==null || searchItem.getId()==null){
+                    ordersMapper.insert(item);
+                }
+            }
+            else{
+                ordersMapper.update(item);
+            }
         }
-        return null;
+        WebMessage msg=new WebMessage();
+        msg.setSuccess(true);
+        msg.setMessage("保存成功...");
+        return msg;
     }
 
     @Override
@@ -37,7 +52,10 @@ public class OrderServiceImp implements OrderService {
         for (Orders item:records){
             ordersMapper.deleteById(item);
         }
-        return null;
+        WebMessage msg=new WebMessage();
+        msg.setSuccess(true);
+        msg.setMessage("保存成功...");
+        return msg;
     }
 
     @Override
@@ -45,7 +63,10 @@ public class OrderServiceImp implements OrderService {
         for (Orders item:records){
             ordersMapper.update(item);
         }
-        return null;
+        WebMessage msg=new WebMessage();
+        msg.setSuccess(true);
+        msg.setMessage("保存成功...");
+        return msg;
     }
 
     @Override
@@ -65,7 +86,7 @@ public class OrderServiceImp implements OrderService {
         return msg;
     }
 
-    public WebMessage inputOrders(InputStream excelFilein) throws ServiceException {
+    public WebMessage inputOrders(InputStream excelFilein,String batchId) throws ServiceException {
         String opUser="";
         try{
             opUser=WebUtil.getCurrentUser().getUserName();
@@ -93,11 +114,12 @@ public class OrderServiceImp implements OrderService {
             if(searchItem==null || searchItem.getId()==null){
                 item.setCreateTime(new Date());
                 item.setCreateUser(opUser);
-                item.setOrderStatus("待发货");
+                item.setOrderLife(1);//云帆导入
+                item.setBatchID(batchId);
                 ordersMapper.insert(item);
             }
             else{
-                if(searchItem.getOrderStatus().equals("待发货")){
+                if(searchItem.getOrderLife().equals(1)){//云帆导入
                     item.setId(searchItem.getId());
                     item.setModifyTime(new Date());
                     item.setModifyUser(opUser);
@@ -139,7 +161,7 @@ public class OrderServiceImp implements OrderService {
                     item.getTrackingNum()!=null && !item.getTrackingNum().equals("")){
                 item.setModifyUser(opUser);
                 item.setModifyTime(new Date());
-                item.setOrderStatus("已发货");
+                item.setOrderLife(4);
                 ordersMapper.updateOrdersTracking(item);
             }
         }
@@ -349,8 +371,16 @@ public class OrderServiceImp implements OrderService {
      * @return
      */
     public WebMessage mergeOrder(){
+        String opUser="";
+        try{
+            opUser=WebUtil.getCurrentUser().getUserName();
+        }
+        catch (Exception ex){
+            opUser="";
+        }
+
         Orders condition=new Orders();
-        condition.setOrderStatus("待发货");
+        condition.setOrderLife(1);
         List<Orders> list=ordersMapper.findPage(condition,new RowBounds(0,Integer.MAX_VALUE)," Order By t.receiverPhone,t.productSpecific");
         String code=UUID.randomUUID().toString();
         Orders lastOrders=new Orders();
@@ -363,6 +393,9 @@ public class OrderServiceImp implements OrderService {
                     lastOrders.getReceiverFullAddres().equals(item.getReceiverFullAddres())){
                 if(item.getUuid()==null || item.getUuid().equals("")){
                     item.setUuid(code);
+                    item.setOrderLife(2);
+                    item.setModifyUser(opUser);
+                    item.setModifyTime(new Date());
                     ordersMapper.update(item);
                 }
             }
@@ -370,6 +403,9 @@ public class OrderServiceImp implements OrderService {
                 if(item.getUuid()==null || item.getUuid().equals("")){
                     code=UUID.randomUUID().toString();;
                     item.setUuid(code);
+                    item.setOrderLife(2);
+                    item.setModifyUser(opUser);
+                    item.setModifyTime(new Date());
                     ordersMapper.update(item);
                 }
                 else{
@@ -393,14 +429,26 @@ public class OrderServiceImp implements OrderService {
      * @return
      */
     public List<Orders> waitSendExport(Orders record){
+        String opUser="";
+        try{
+            opUser=WebUtil.getCurrentUser().getUserName();
+        }
+        catch (Exception ex){
+            opUser="";
+        }
+
         record.setUuid("null");
-        record.setOrderStatus("待发货");
+        record.setOrderLife(23);
         List<Orders> list=ordersMapper.findPage(record,new RowBounds(0,Integer.MAX_VALUE)," Order By t.receiverPhone ASC,t.productSpecific ASC");
         Map<String,Orders> map=new HashMap<String,Orders>();
         for(Orders item:list){
             if(item.getUuid()==null || item.getUuid().equals("")){
                 continue;
             }
+            item.setOrderLife(3);
+            item.setModifyUser(opUser);
+            item.setModifyTime(new Date());
+            ordersMapper.update(item);
             if(map.containsKey(item.getUuid())){
                 Orders tempItem=map.get(item.getUuid());
                 tempItem.setProductSpecific(tempItem.getProductSpecific()+" "+ item.getProductSpecific()+" * "+item.getSellerNumber()+"; ");
@@ -413,7 +461,34 @@ public class OrderServiceImp implements OrderService {
                 map.put(item.getUuid(),item);
                 item.setProductSpecific(item.getProductSpecific()+" * "+item.getSellerNumber()+"; ");
             }
+
         }
         return  new ArrayList<Orders>(map.values());
+    }
+
+    @Override
+    public WebMessage exportOrders(Orders record, Integer start, Integer limit, Sorte[] sorts) {
+        String opUser="";
+        try{
+            opUser=WebUtil.getCurrentUser().getUserName();
+        }
+        catch (Exception ex){
+            opUser="";
+        }
+        record.setOrderLife(45);
+        Long total=ordersMapper.getCount(record);
+        List<Orders> list=ordersMapper.findPage(record,new DongYu.WebBase.System.Mapping.RowBounds(start,limit),Sorte.getSqlOrderStr(sorts));
+        for(Orders item:list){
+            item.setModifyUser(opUser);
+            item.setModifyTime(new Date());
+            ordersMapper.update(item);
+        }
+
+        WebMessage msg=new WebMessage();
+        msg.setTotal(total);
+        msg.setData(list);
+        msg.setSuccess(true);
+        msg.setMessage("成功");
+        return msg;
     }
 }

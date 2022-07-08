@@ -566,7 +566,7 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 		</set>
 		<![CDATA[
         WHERE
-        	uuid = #{uuid}
+        	uuid = #{uuid} and orderLife=3
  		]]>
 	</update>
 
@@ -808,6 +808,12 @@ PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
 			<if test="record.delivery!= null" >
 		  		AND t.delivery=#{record.delivery,jdbcType=VARCHAR}
 		  	</if>
+			<if test="record.orderLife!= null and record.orderLife==23" >
+				AND ( t.orderLife= 2 or t.orderLife= 3 )
+			</if>
+			<if test="record.orderLife!= null and record.orderLife==45" >
+				AND ( t.orderLife= 4 or t.orderLife= 5 )
+			</if>
 			<if test="record.orderLife!= null" >
 				AND t.orderLife=#{record.orderLife,jdbcType=INTEGER}
 			</if>

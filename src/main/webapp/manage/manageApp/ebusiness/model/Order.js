@@ -60,6 +60,9 @@ Ext.define('manageApp.ebusiness.model.Order',
         { name: 'invoice', type: 'string' },//发票信息
         { name: 'delivery', type: 'string' },//配送方式
         { name: 'uuid', type: 'string' },//uuid
+        { name: 'batchID', type: 'string' },//batchID
+        { name: 'sumNum', type: 'double' },//batchID
+        { name: 'orderLife', type: 'int' },//batchID
         { name: 'createTime', type: 'date'},//创建时间
         { name: 'createTimeBegin', type: 'date'},//
         { name: 'createTimeEnd', type: 'date'},//

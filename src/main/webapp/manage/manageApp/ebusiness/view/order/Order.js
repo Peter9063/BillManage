@@ -18,6 +18,7 @@
 		}
 		var columns =  [
 			{xtype:'rownumberer'},
+			{ text: '数量',  dataIndex: 'sumNum' ,width:'10%'},
 			{ text: '渠道商',  dataIndex: 'distributor',width:'8%',minWidth:130},
 			{ text: '平台名称',  dataIndex: 'siteName' ,width:'10%'},
 			{ text: '店铺名称',  dataIndex: 'storeName' ,width:'10%'},
@@ -73,6 +74,7 @@
 			{ text: '买家电话',  dataIndex: 'buyphone' ,width:'10%'},
 			{ text: '发票信息',  dataIndex: 'invoice' ,width:'10%'},
 			{ text: '配送方式',  dataIndex: 'delivery' ,width:'10%'},
+			{ text: '生命状态',  dataIndex: 'orderLife' ,renderer : manageApp.utils.Model.convertOrderLifeValue,width:'10%'},
 			{ text: '创建时间',  dataIndex: 'createTime' ,xtype: 'datecolumn',   format:'Y-m-d H:i:s' ,width:'15%'},
 			{ text: '创建人',  dataIndex: 'createUser' ,width:'10%'},
 			{ text: '修改时间',  dataIndex: 'modifyTime' ,xtype: 'datecolumn',   format:'Y-m-d H:i:s',width:'15%' },
@@ -101,13 +103,8 @@
 						width: 60
 				 },'-',{
 					xtype: 'button',
-					name:'butSendedInput',
-					text: '快递单导入',
-					width: 60
-				},'-',{
-					xtype: 'button',
-					name:'butExport',
-					text: '全部导出',
+					name:'butMergeOrder',
+					text: '合并订单',
 					width: 60
 				},'-',{
 					xtype: 'button',
@@ -116,20 +113,26 @@
 					width: 60
 				},'-',{
 					xtype: 'button',
-					name:'butMergeOrder',
-					text: '合并订单',
+					name:'butSendedInput',
+					text: '快递单导入',
 					width: 60
 				},'-',{
 					xtype: 'button',
-					name:'butAdd',
-					text: '添加',
+					name:'butExport',
+					text: '回导云帆',
 					width: 60
-				 },'-',{
-					xtype : 'button',
-					name:'butEdit',
-					text : '修改',
-					width : 60
 				}
+				// ,'-',{
+				// 	xtype: 'button',
+				// 	name:'butAdd',
+				// 	text: '添加',
+				// 	width: 60
+				//  },'-',{
+				// 	xtype : 'button',
+				// 	name:'butEdit',
+				// 	text : '修改',
+				// 	width : 60
+				// }
 		    ],
 		    bbar: Ext.create('Ext.PagingToolbar', {
 		    	store:me.mainStore,
@@ -181,26 +184,26 @@
 					padding:'5 5 5 5'
 				},
 				{
-					fieldLabel: '订单状态',
-					name: 'orderStatus',
-					padding:'5 5 5 5'
-				},
-				{
 					fieldLabel: '快递单号',
 					name: 'trackingNum',
 					padding:'5 5 5 5'
 				},
-				// {
-				// 	xtype:'combo',
-				// 	fieldLabel: '工单状态',
-				// 	name: 'state',
-				//     queryMode: 'local',
-				//     displayField: 'name',
-				//     valueField: 'value',
-				//     value:'1',
-				// 	store:manageApp.utils.Model.getConstantStore('BillState'),
-				// 	padding:'5 5 5 5'
-				// },
+				{
+					fieldLabel: '导入批号',
+					name: 'batchId',
+					padding:'5 5 5 5'
+				},
+				{
+					xtype:'combo',
+					fieldLabel: '生命状态',
+					name: 'orderLife',
+				    queryMode: 'local',
+				    displayField: 'name',
+				    valueField: 'value',
+				    value:'1',
+					store:manageApp.utils.Model.getConstantStore('OrderLife'),
+					padding:'5 5 5 5'
+				},
 				{
 					xtype: 'datefield',
 					fieldLabel: '创建开始时间',

@@ -88,13 +88,13 @@ public class OrderAction {
 
     @RequestMapping(value = "/importOrders", method = {RequestMethod.GET, RequestMethod.POST})
     @ResponseBody
-    public WebMessage importOrders(@RequestParam("filePath") MultipartFile multipartFile, HttpServletResponse response) throws ServiceException, IOException {
+    public WebMessage importOrders(@RequestParam("filePath") MultipartFile multipartFile,String batchId, HttpServletResponse response) throws ServiceException, IOException {
         String fileName = multipartFile.getOriginalFilename();
         if (!fileName.matches("^.+\\.(?i)(xls)$") && !fileName.matches("^.+\\.(?i)(xlsx)$")) {
             throw new ServiceException("文件格式不正确");
         }
         InputStream ordersFile = multipartFile.getInputStream();
-        WebMessage webMessage=orderService.inputOrders(ordersFile);
+        WebMessage webMessage=orderService.inputOrders(ordersFile,batchId);
         return webMessage;
     }
 
@@ -115,7 +115,7 @@ public class OrderAction {
     public ResponseEntity<byte[]> exportOrders(Orders record) throws Exception {
         SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
-        WebMessage message=orderService.findPage(record,0,Integer.MAX_VALUE,null);
+        WebMessage message=orderService.exportOrders(record,0,Integer.MAX_VALUE,null);
         List<Orders> searchList= (List<Orders>) message.getData();
 
         Map<String, List<List<String>>> modelMap = new HashMap<String, List<List<String>>>();
