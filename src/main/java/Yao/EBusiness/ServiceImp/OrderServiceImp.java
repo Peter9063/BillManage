@@ -215,7 +215,7 @@ public class OrderServiceImp implements OrderService {
             if(headCol.get(i)!=null && headCol.get(i).equals("子单号Oid")){
                 mapping.put(i,"orderOid");
             }
-            if(headCol.get(i)!=null && headCol.get(i).equals("快递公司")){
+            if(headCol.get(i)!=null && (headCol.get(i).equals("快递公司") ||headCol.get(i).equals("快递名称"))){
                 mapping.put(i,"expressName");
             }
             if(headCol.get(i)!=null && headCol.get(i).equals("快递单号")){
@@ -359,7 +359,7 @@ public class OrderServiceImp implements OrderService {
             if(headCol.get(i)!=null && headCol.get(i).equals("配送方式")){
                 mapping.put(i,"delivery");
             }
-            if(headCol.get(i)!=null && headCol.get(i).equals("虚拟单号")){
+            if(headCol.get(i)!=null && (headCol.get(i).equals("虚拟单号") || headCol.get(i).equals("业务类型"))){
                 mapping.put(i,"uuid");
             }
         }
@@ -479,9 +479,12 @@ public class OrderServiceImp implements OrderService {
         Long total=ordersMapper.getCount(record);
         List<Orders> list=ordersMapper.findPage(record,new DongYu.WebBase.System.Mapping.RowBounds(start,limit),Sorte.getSqlOrderStr(sorts));
         for(Orders item:list){
-            item.setModifyUser(opUser);
-            item.setModifyTime(new Date());
-            ordersMapper.update(item);
+            if(item.getOrderLife().equals(4)){
+                item.setModifyUser(opUser);
+                item.setModifyTime(new Date());
+                item.setOrderLife(5);
+                ordersMapper.update(item);
+            }
         }
 
         WebMessage msg=new WebMessage();
